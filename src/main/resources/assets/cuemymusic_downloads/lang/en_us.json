@@ -1,0 +1,20 @@
+{
+	"cuemymusic_downloads.started": "Downloading. /cmm download cancel stops it.",
+	"cuemymusic_downloads.progress": "Downloading: %s%%",
+	"cuemymusic_downloads.converting": "Converting to Ogg…",
+	"cuemymusic_downloads.added": "Added %s to Cue My Music Downloads.",
+	"cuemymusic_downloads.updated": "Downloaded %s again, replacing the old copy.",
+	"cuemymusic_downloads.removed": "Removed %s.",
+	"cuemymusic_downloads.cancelled": "Download cancelled.",
+	"cuemymusic_downloads.not_running": "Nothing is downloading.",
+	"cuemymusic_downloads.busy": "A download is already running. Wait for it, or /cmm download cancel.",
+	"cuemymusic_downloads.not_link": "Give a link starting with https://.",
+	"cuemymusic_downloads.missing": "Couldn't find %s. Install it, then try again. No restart needed.",
+	"cuemymusic_downloads.install": "Install with: %s",
+	"cuemymusic_downloads.skipped": "Skipped: live streams and videos over an hour aren't downloaded.",
+	"cuemymusic_downloads.failed": "Download failed: %s",
+	"cuemymusic_downloads.none": "No downloads yet. They go in the %s resource pack.",
+	"cuemymusic_downloads.count": "%s downloaded songs, in the %s resource pack:",
+	"cuemymusic_downloads.no_song": "No downloaded song called \"%s\".",
+	"cuemymusic_downloads.several": "\"%s\" matches several downloads: %s. Type more of the title."
+}

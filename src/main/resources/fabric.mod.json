@@ -1,0 +1,25 @@
+{
+	"schemaVersion": 1,
+	"id": "cuemymusic_downloads",
+	"version": "${version}",
+	"name": "Cue My Music: Downloads",
+	"description": "Adds /cmm download to Cue My Music: saves a song from a link with yt-dlp into a resource pack, playable from the player only.",
+	"authors": ["simply-sunny"],
+	"contact": {
+		"sources": "https://github.com/simply-sunny/cue-my-music-downloads",
+		"issues": "https://github.com/simply-sunny/cue-my-music-downloads/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/cuemymusic_downloads/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["mix.cuemymusic.downloads.DownloadsClient"]
+	},
+	"depends": {
+		"fabricloader": ">=0.16.0",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*",
+		"cuemymusic": ">=1.1.0"
+	}
+}
