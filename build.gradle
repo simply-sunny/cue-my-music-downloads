@@ -18,10 +18,12 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	// Only so runClient has the player to try downloads in. Nothing here calls into it.
-	runtimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	// Cue My Music itself, for its playlists. Build it first; see gradle.properties.
 	def cue = file(project.cue_my_music_jar)
-	if (cue.exists()) runtimeOnly files(cue)
+	if (!cue.exists()) throw new GradleException("Build Cue My Music first: ${cue} is missing")
+	compileOnly files(cue)
+	runtimeOnly files(cue)
+	runtimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

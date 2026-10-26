@@ -6,6 +6,8 @@
 
 Type `/cmm download <link>` and the song is downloaded with [yt-dlp](https://github.com/yt-dlp/yt-dlp), converted to Ogg with [ffmpeg](https://ffmpeg.org/), and added to a resource pack called **Cue My Music Downloads**. The pack is turned on for you, and the song shows up in the player on that pack's page.
 
+A playlist link downloads the whole playlist (up to 200 songs) and makes a Cue My Music playlist with the same name. Downloading it again later adds only the new songs.
+
 Downloaded songs play from the player only. The game never picks them for its own music.
 
 Only download what you have the right to. Many sites don't allow it in their terms.
@@ -31,12 +33,16 @@ The add-on looks for both tools on your `PATH`, and in `/opt/homebrew/bin`, `/us
 
 | Command | Does |
 | --- | --- |
-| `/cmm download <link>` | Downloads the song at the link. Progress shows above the hotbar. |
+| `/cmm download <link>` | Downloads the song, or every song in a playlist. Progress shows above the hotbar. |
 | `/cmm download cancel` | Stops the download. |
 | `/cmm downloads` | Lists downloaded songs. Click the pack name to open its folder. |
 | `/cmm downloads remove <song>` | Deletes a downloaded song. |
 
-- One download runs at a time. For a link to a video in a playlist, only that video is downloaded.
+- One download runs at a time.
+- A video link that also names a playlist (`watch?v=…&list=…`) downloads just the video. Use the playlist's own link (`playlist?list=…`) for all of it.
+- Videos in a playlist that can't be downloaded (private, removed, region-locked) are skipped, and chat says how many.
+- Cancelling keeps the songs that had finished.
+- Spotify links don't work: Spotify only shares playlist contents with apps you log in to. Use a YouTube, YouTube Music, or SoundCloud playlist.
 - Live streams and anything over an hour are skipped.
 - The title is the track name if the site has one, else the video title. The artist is the site's artist, else the uploader (YouTube's "Artist - Topic" channels become "Artist").
 - Downloading the same link again replaces the old copy.
@@ -73,7 +79,7 @@ yt-dlp's full output for a failed download is in `.minecraft/logs/latest.log`.
 
 ## Develop
 
-Requires JDK 25. `./gradlew build` builds the jar into `build/libs/`. `./gradlew runClient` also loads Cue My Music from `../cue-my-music` if it's been built there; see `gradle.properties`.
+Requires JDK 25 and a built Cue My Music in `../cue-my-music` (`./gradlew buildAll` there), which the add-on compiles against for playlists; see `gradle.properties`. Then `./gradlew build` builds the jar into `build/libs/`.
 
 ## License
 

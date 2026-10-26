@@ -22,7 +22,7 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 
 /**
- * {@code /cmm download <link>}, {@code /cmm download cancel},
+ * {@code /cmm download <link>} (a video or a playlist), {@code /cmm download cancel},
  * {@code /cmm downloads} and {@code /cmm downloads remove <song>}. They join
  * Cue My Music's own {@code /cmm} commands.
  */
@@ -60,6 +60,10 @@ public final class DownloadsClient implements ClientModInitializer {
         String lower = link.toLowerCase(Locale.ROOT);
         if (!lower.startsWith("https://") && !lower.startsWith("http://") || link.contains(" ")) {
             c.getSource().sendError(Component.translatable("cuemymusic_downloads.not_link"));
+            return 0;
+        }
+        if (lower.matches("https?://([a-z]+\\.)?spotify\\.com/.*")) {
+            c.getSource().sendError(Component.translatable("cuemymusic_downloads.spotify"));
             return 0;
         }
         if (Downloader.running()) {
