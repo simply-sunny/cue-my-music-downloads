@@ -244,8 +244,12 @@ final class Downloader {
         return p.waitFor();
     }
 
-    /** libvorbis quality 7, about 224 kbps: past the point where it's audibly different from the source. */
-    private static final String QUALITY = "7";
+    /**
+     * libvorbis's top quality, about 400 kbps. The source is already lossy (YouTube's Opus is about 130 kbps),
+     * and each lossy step costs something, so this step should cost as little as it can: measured on a song,
+     * q10 is 38.5 dB from the source, q7 only 29.8 dB. A 5-minute song is about 15 MB.
+     */
+    private static final String QUALITY = "10";
     private static final Object ENCODER_CHECK = new Object();
     private static Boolean libVorbis;
     private static Path libVorbisFor;

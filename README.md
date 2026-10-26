@@ -71,7 +71,7 @@ Files are named after the site's video id.
 
 ### Sound quality
 
-Minecraft only plays Ogg Vorbis, so every song is converted to it: stereo, libvorbis quality 7 (about 224 kbps), which sounds the same as the source.
+Minecraft only plays Ogg Vorbis, so every song is converted to it: stereo, at libvorbis's highest quality (10, about 400 kbps; a 5-minute song is about 15 MB). The source is already compressed (YouTube's audio is Opus at about 130 kbps), so converting again at anything less blurs drums and other sharp sounds you can hear.
 
 That needs libvorbis. The Windows and Linux ffmpeg builds have it. **Homebrew's ffmpeg doesn't**, so on a Mac install `vorbis-tools` as well (`brew install vorbis-tools`), which adds `oggenc`, and the add-on uses that. Without either, ffmpeg's own Vorbis encoder is used, which sounds clearly worse; the Downloads page warns when that's the case. Songs already downloaded that way get the better encoding if you download them again.
 
