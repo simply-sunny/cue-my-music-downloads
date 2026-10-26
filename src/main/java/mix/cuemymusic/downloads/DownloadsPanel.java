@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.Blaze3D;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import mix.cuemymusic.api.CuePanel;
 import mix.cuemymusic.api.PanelCanvas;
@@ -19,7 +20,8 @@ import mix.cuemymusic.library.Track;
  */
 final class DownloadsPanel implements CuePanel {
     private static final String LINK = "link";
-    private static final Art ICON = Art.block("block/jukebox_top");
+    private static final Art ICON = new Art.Texture(
+            Identifier.fromNamespaceAndPath("cuemymusic_downloads", "textures/gui/download.png"), 16, 16);
     private static final int RED = 0xFFFF6B6B;
     private static final int DIM = 0xFFB3B3B3;
     private static final int WHITE = 0xFFFFFFFF;
@@ -57,7 +59,7 @@ final class DownloadsPanel implements CuePanel {
     public void draw(PanelCanvas c) {
         List<Track> songs = MusicLibrary.byPack(DownloadPack.ID);
         c.header(ICON, tr("cuemymusic_downloads.panel.kind"), title(),
-                tr("cuemymusic_downloads.panel.summary", songs.size(), DownloadPack.NAME), 0xFF1E3346);
+                tr("cuemymusic_downloads.panel.summary", songs.size(), DownloadPack.NAME), 0xFF1E3E7A);
 
         c.heading(tr("cuemymusic_downloads.panel.add"));
         Tools tools = tools();
