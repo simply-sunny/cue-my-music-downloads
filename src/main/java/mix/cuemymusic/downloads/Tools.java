@@ -27,6 +27,11 @@ record Tools(Path ytDlp, Path ffmpeg) {
         return ytDlp != null && ffmpeg != null;
     }
 
+    /** "yt-dlp", "ffmpeg", or both, whichever is missing. */
+    String missing() {
+        return ytDlp == null && ffmpeg == null ? "yt-dlp and ffmpeg" : ytDlp == null ? "yt-dlp" : "ffmpeg";
+    }
+
     /** The command that installs whatever is missing on this system. */
     String installHint() {
         List<String> missing = new ArrayList<>();

@@ -76,6 +76,7 @@ final class Downloader {
         try {
             tmp = Files.createTempDirectory("cuemymusic-download");
             say(Component.translatable("cuemymusic_downloads.started"));
+            bar(Component.translatable("cuemymusic_downloads.starting"), -1);
 
             // 1. The best audio-only format of each video, as the site serves it.
             List<JsonObject> done = new ArrayList<>();
@@ -105,8 +106,9 @@ final class Downloader {
                     String key = f[0] + " " + percent;
                     if (key.equals(shown[0])) return;
                     shown[0] = key;
+                    double fraction = many ? (Integer.parseInt(f[0]) - 1 + percent / 100.0) / Integer.parseInt(f[1]) : percent / 100.0;
                     bar(many ? Component.translatable("cuemymusic_downloads.progress_of", f[0], f[1], percent)
-                            : Component.translatable("cuemymusic_downloads.progress", percent));
+                            : Component.translatable("cuemymusic_downloads.progress", percent), fraction);
                 } else if (line.startsWith(DONE)) {
                     if (JsonParser.parseString(line.substring(DONE.length())) instanceof JsonObject o) done.add(o);
                 } else {
@@ -134,7 +136,7 @@ final class Downloader {
                 JsonObject info = done.get(i);
                 if (playlist[0] == null && !text(info, "playlist_title").isBlank()) playlist[0] = text(info, "playlist_title").strip();
                 bar(done.size() > 1 ? Component.translatable("cuemymusic_downloads.converting_of", i + 1, done.size())
-                        : Component.translatable("cuemymusic_downloads.converting"));
+                        : Component.translatable("cuemymusic_downloads.converting"), done.size() > 1 ? i / (double) done.size() : -1);
                 Path ogg = convert(tools, tmp, Path.of(text(info, "filepath")));
                 if (ogg == null) {
                     failed++;
@@ -270,7 +272,32 @@ final class Downloader {
         }
     }
 
+    /** What the running download is doing, for the Downloads page. Fraction is -1 when unknown. */
+    record Status(Component label, double fraction) {
+    }
+
+    /** The last message about a download, for the Downloads page, and whether it was a failure. */
+    record Result(Component message, boolean failed) {
+    }
+
+    private static volatile Status status = new Status(Component.empty(), -1);
+    private static volatile Result result;
+
+    static Status status() {
+        return status;
+    }
+
+    static Result result() {
+        return result;
+    }
+
+    /** Shows a message about a download or a removal on the Downloads page. */
+    static void report(Component message, boolean failed) {
+        result = new Result(message, failed);
+    }
+
     private static void say(Component message) {
+        report(message, false);
         Minecraft mc = Minecraft.getInstance();
         mc.execute(() -> {
             if (mc.player != null) mc.player.sendSystemMessage(message);
@@ -278,13 +305,38 @@ final class Downloader {
     }
 
     private static void fail(Component message) {
-        say(message.copy().withStyle(ChatFormatting.RED));
+        report(message, true);
+        Minecraft mc = Minecraft.getInstance();
+        mc.execute(() -> {
+            if (mc.player != null) mc.player.sendSystemMessage(message.copy().withStyle(ChatFormatting.RED));
+        });
     }
 
-    private static void bar(Component message) {
+    private static void bar(Component message, double fraction) {
+        status = new Status(message, fraction);
         Minecraft mc = Minecraft.getInstance();
         mc.execute(() -> {
             if (mc.player != null) mc.player.sendOverlayMessage(message);
         });
+    }
+
+    /**
+     * Starts downloading {@code link}, after checking it and the tools.
+     * Returns why it can't, or null once it's started. Shared by the command
+     * and the Downloads page.
+     */
+    static Component tryStart(String link) {
+        link = link.strip();
+        String lower = link.toLowerCase(Locale.ROOT);
+        if (!lower.startsWith("https://") && !lower.startsWith("http://") || link.contains(" ")) {
+            return Component.translatable("cuemymusic_downloads.not_link");
+        }
+        if (lower.matches("https?://([a-z]+\\.)?spotify\\.com/.*")) return Component.translatable("cuemymusic_downloads.spotify");
+        if (running()) return Component.translatable("cuemymusic_downloads.busy");
+        Tools tools = Tools.find();
+        if (!tools.ready()) return Component.translatable("cuemymusic_downloads.missing", tools.missing());
+        result = null;
+        start(link, tools);
+        return null;
     }
 }

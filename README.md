@@ -4,7 +4,7 @@
 
 ---
 
-Type `/cmm download <link>` and the song is downloaded with [yt-dlp](https://github.com/yt-dlp/yt-dlp), converted to Ogg with [ffmpeg](https://ffmpeg.org/), and added to a resource pack called **Cue My Music Downloads**. The pack is turned on for you, and the song shows up in the player on that pack's page.
+Paste a link into the **Downloads** page of the player, or type `/cmm download <link>`, and the song is downloaded with [yt-dlp](https://github.com/yt-dlp/yt-dlp), converted to Ogg with [ffmpeg](https://ffmpeg.org/), and added to a resource pack called **Cue My Music Downloads**. The pack is turned on for you, and the song shows up on the add-on's **Downloads** page in the player.
 
 A playlist link downloads the whole playlist (up to 200 songs) and makes a Cue My Music playlist with the same name. Downloading it again later adds only the new songs.
 
@@ -30,6 +30,10 @@ Client-side only.
 The add-on looks for both tools on your `PATH`, and in `/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`, `/snap/bin`, and `~/.local/bin` (on Windows, WinGet's `Links` folder), since launchers often don't pass on the shell's `PATH`. A tool installed while the game is running is found on the next download.
 
 ## Use
+
+Open the player and click **Downloads** in the library. Paste a link and press Enter or **Download**. The page shows the download's progress, has **Cancel** while it runs, and lists your downloaded songs below. Right-click a song there and pick **Delete download** to remove it. **Open folder** opens the pack's folder. If yt-dlp or ffmpeg is missing, the page says which and shows the command to install it.
+
+The same things work from chat:
 
 | Command | Does |
 | --- | --- |

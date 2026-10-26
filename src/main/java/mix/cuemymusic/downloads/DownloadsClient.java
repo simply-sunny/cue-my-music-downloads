@@ -21,6 +21,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 
+import mix.cuemymusic.api.CuePanels;
+
 /**
  * {@code /cmm download <link>} (a video or a playlist), {@code /cmm download cancel},
  * {@code /cmm downloads} and {@code /cmm downloads remove <song>}. They join
@@ -32,6 +34,7 @@ public final class DownloadsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         DownloadPack.refreshMeta();
+        CuePanels.register(new DownloadsPanel());
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registry) -> register(dispatcher));
     }
 
@@ -56,31 +59,15 @@ public final class DownloadsClient implements ClientModInitializer {
     }
 
     private static int download(CommandContext<FabricClientCommandSource> c) {
-        String link = StringArgumentType.getString(c, "link").strip();
-        String lower = link.toLowerCase(Locale.ROOT);
-        if (!lower.startsWith("https://") && !lower.startsWith("http://") || link.contains(" ")) {
-            c.getSource().sendError(Component.translatable("cuemymusic_downloads.not_link"));
-            return 0;
-        }
-        if (lower.matches("https?://([a-z]+\\.)?spotify\\.com/.*")) {
-            c.getSource().sendError(Component.translatable("cuemymusic_downloads.spotify"));
-            return 0;
-        }
-        if (Downloader.running()) {
-            c.getSource().sendError(Component.translatable("cuemymusic_downloads.busy"));
-            return 0;
-        }
+        Component error = Downloader.tryStart(StringArgumentType.getString(c, "link"));
+        if (error == null) return 1;
+        c.getSource().sendError(error);
         Tools tools = Tools.find();
         if (!tools.ready()) {
-            String missing = tools.ytDlp() == null && tools.ffmpeg() == null ? "yt-dlp and ffmpeg"
-                    : tools.ytDlp() == null ? "yt-dlp" : "ffmpeg";
-            c.getSource().sendError(Component.translatable("cuemymusic_downloads.missing", missing));
             c.getSource().sendFeedback(Component.translatable("cuemymusic_downloads.install",
                     Component.literal(tools.installHint()).withStyle(ChatFormatting.YELLOW)));
-            return 0;
         }
-        Downloader.start(link, tools);
-        return 1;
+        return 0;
     }
 
     private static int list(CommandContext<FabricClientCommandSource> c) {

@@ -21,5 +21,20 @@
 	"cuemymusic_downloads.count": "%s downloaded songs, in the %s resource pack:",
 	"cuemymusic_downloads.no_song": "No downloaded song called \"%s\".",
 	"cuemymusic_downloads.several": "\"%s\" matches several downloads: %s. Type more of the title.",
-	"cuemymusic_downloads.spotify": "Spotify links can't be downloaded: Spotify only shares playlists with apps you log in to. Use a YouTube, YouTube Music, or SoundCloud playlist link instead."
+	"cuemymusic_downloads.spotify": "Spotify links can't be downloaded: Spotify only shares playlists with apps you log in to. Use a YouTube, YouTube Music, or SoundCloud playlist link instead.",
+	"cuemymusic_downloads.starting": "Starting…",
+	"cuemymusic_downloads.panel.title": "Downloads",
+	"cuemymusic_downloads.panel.subtitle": "Add songs from links",
+	"cuemymusic_downloads.panel.busy": "Downloading…",
+	"cuemymusic_downloads.panel.kind": "Add-on",
+	"cuemymusic_downloads.panel.summary": "%s songs, saved in the %s resource pack",
+	"cuemymusic_downloads.panel.add": "Add from a link",
+	"cuemymusic_downloads.panel.hint": "Paste a video or playlist link",
+	"cuemymusic_downloads.panel.download": "Download",
+	"cuemymusic_downloads.panel.cancel": "Cancel",
+	"cuemymusic_downloads.panel.recheck": "Check again",
+	"cuemymusic_downloads.panel.folder": "Open folder",
+	"cuemymusic_downloads.panel.about": "YouTube, SoundCloud, Bandcamp, and the other sites yt-dlp supports. A playlist link adds the whole playlist and makes a playlist here too. Songs play from the player only.",
+	"cuemymusic_downloads.panel.empty": "No downloads yet.",
+	"cuemymusic_downloads.panel.delete": "Delete download"
 }
