@@ -21,7 +21,7 @@ Client-side only.
 
    | System | Command |
    | --- | --- |
-   | macOS | `brew install yt-dlp ffmpeg` |
+   | macOS | `brew install yt-dlp ffmpeg vorbis-tools` |
    | Windows | `winget install yt-dlp.yt-dlp Gyan.FFmpeg` |
    | Linux | Your package manager, such as `sudo apt install yt-dlp ffmpeg`. Distro yt-dlp packages are often too old for YouTube; `pipx install yt-dlp` gets the latest. |
 
@@ -67,7 +67,13 @@ resourcepacks/Cue My Music Downloads/
     sounds/music/*.ogg
 ```
 
-Files are named after the site's video id. Songs are stereo Ogg Vorbis. With ffmpeg's libvorbis that's quality 5 (about 160 kbps); Homebrew's ffmpeg doesn't include libvorbis, so ffmpeg's own Vorbis encoder is used instead, at a similar size.
+Files are named after the site's video id.
+
+### Sound quality
+
+Minecraft only plays Ogg Vorbis, so every song is converted to it: stereo, libvorbis quality 7 (about 224 kbps), which sounds the same as the source.
+
+That needs libvorbis. The Windows and Linux ffmpeg builds have it. **Homebrew's ffmpeg doesn't**, so on a Mac install `vorbis-tools` as well (`brew install vorbis-tools`), which adds `oggenc`, and the add-on uses that. Without either, ffmpeg's own Vorbis encoder is used, which sounds clearly worse; the Downloads page warns when that's the case. Songs already downloaded that way get the better encoding if you download them again.
 
 To remove everything, delete the folder, or turn the pack off under **Options → Resource Packs**.
 

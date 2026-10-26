@@ -10,17 +10,20 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Finds yt-dlp and ffmpeg. The mod never downloads them; the player installs
- * them. A game started from a launcher often doesn't get the shell's PATH, so
- * the usual install folders are searched as well.
+ * Finds yt-dlp and ffmpeg, and oggenc if it's there. The mod never downloads
+ * them; the player installs them. A game started from a launcher often doesn't
+ * get the shell's PATH, so the usual install folders are searched as well.
+ *
+ * <p>oggenc (from vorbis-tools) is optional. It's libvorbis, the good Vorbis
+ * encoder, for when ffmpeg was built without it, as Homebrew's is.
  */
-record Tools(Path ytDlp, Path ffmpeg) {
+record Tools(Path ytDlp, Path ffmpeg, Path oggenc) {
     static final boolean WINDOWS = System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("windows");
     static final boolean MAC = System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("mac");
 
     /** Both tools, or null for each one that's missing. */
     static Tools find() {
-        return new Tools(find("yt-dlp"), find("ffmpeg"));
+        return new Tools(find("yt-dlp"), find("ffmpeg"), find("oggenc"));
     }
 
     boolean ready() {
@@ -30,6 +33,13 @@ record Tools(Path ytDlp, Path ffmpeg) {
     /** "yt-dlp", "ffmpeg", or both, whichever is missing. */
     String missing() {
         return ytDlp == null && ffmpeg == null ? "yt-dlp and ffmpeg" : ytDlp == null ? "yt-dlp" : "ffmpeg";
+    }
+
+    /** The command that gets a libvorbis encoder on this system. */
+    static String qualityHint() {
+        if (WINDOWS) return "winget install Gyan.FFmpeg";
+        if (MAC) return "brew install vorbis-tools";
+        return "sudo apt install vorbis-tools";
     }
 
     /** The command that installs whatever is missing on this system. */

@@ -165,18 +165,37 @@ final class Downloader {
     private static Path convert(Tools tools, Path tmp, Path download) throws IOException, InterruptedException {
         if (!Files.isRegularFile(download)) return null;
         Path ogg = tmp.resolve("song.ogg");
-        List<String> cmd = new ArrayList<>(List.of(
+        List<String> decode = new ArrayList<>(List.of(
                 tools.ffmpeg().toString(), "-nostdin", "-hide_banner", "-loglevel", "error", "-y",
                 "-i", download.toString(), "-vn", "-map_metadata", "-1", "-ac", "2"));
-        // Homebrew's ffmpeg has no libvorbis; ffmpeg's own encoder is marked experimental but plays fine.
-        cmd.addAll(hasLibVorbis(tools) ? List.of("-c:a", "libvorbis", "-q:a", "5")
-                : List.of("-c:a", "vorbis", "-strict", "experimental", "-q:a", "6"));
-        cmd.add(ogg.toString());
         List<String> out = new ArrayList<>();
-        int code = exec(cmd, out::add);
+        int code;
+        String tool;
+        if (hasLibVorbis(tools)) {
+            tool = "ffmpeg";
+            decode.addAll(List.of("-c:a", "libvorbis", "-q:a", QUALITY, ogg.toString()));
+            code = exec(decode, out::add);
+        } else if (tools.oggenc() != null) {
+            // ffmpeg decodes to WAV, oggenc encodes it with libvorbis.
+            Path wav = tmp.resolve("song.wav");
+            decode.addAll(List.of("-c:a", "pcm_s16le", wav.toString()));
+            tool = "ffmpeg";
+            code = exec(decode, out::add);
+            if (code == 0) {
+                tool = "oggenc";
+                code = exec(List.of(tools.oggenc().toString(), "--quiet", "-q", QUALITY, "-o", ogg.toString(), wav.toString()),
+                        out::add);
+            }
+            Files.deleteIfExists(wav);
+        } else {
+            // ffmpeg's own Vorbis encoder: it plays, but it sounds noticeably worse. The Downloads page says so.
+            tool = "ffmpeg";
+            decode.addAll(List.of("-c:a", "vorbis", "-strict", "experimental", "-q:a", "10", ogg.toString()));
+            code = exec(decode, out::add);
+        }
         Files.deleteIfExists(download);
         if (code != 0 || !Files.isRegularFile(ogg)) {
-            if (!cancelled) DownloadsClient.LOG.warn("ffmpeg exited with {} on {}:\n{}", code, download, String.join("\n", out));
+            if (!cancelled) DownloadsClient.LOG.warn("{} exited with {} on {}:\n{}", tool, code, download, String.join("\n", out));
             return null;
         }
         return ogg;
@@ -225,17 +244,42 @@ final class Downloader {
         return p.waitFor();
     }
 
+    /** libvorbis quality 7, about 224 kbps: past the point where it's audibly different from the source. */
+    private static final String QUALITY = "7";
+    private static final Object ENCODER_CHECK = new Object();
     private static Boolean libVorbis;
+    private static Path libVorbisFor;
 
-    private static boolean hasLibVorbis(Tools tools) throws IOException, InterruptedException {
-        if (libVorbis == null) {
-            boolean[] found = {false};
-            exec(List.of(tools.ffmpeg().toString(), "-hide_banner", "-encoders"), line -> {
-                if (line.contains(" libvorbis ")) found[0] = true;
-            });
-            libVorbis = found[0];
+    /** True if songs will be made with ffmpeg's weaker built-in encoder, because there's no libvorbis or oggenc. */
+    static boolean lowQuality(Tools tools) {
+        if (tools.oggenc() != null || tools.ffmpeg() == null) return false;
+        try {
+            return !hasLibVorbis(tools);
+        } catch (Exception e) {
+            return true;
         }
-        return libVorbis;
+    }
+
+    /**
+     * Whether this ffmpeg has libvorbis, checked once per ffmpeg. Runs its own
+     * process, not through {@link #exec}, so it never touches the download that
+     * Cancel stops.
+     */
+    private static boolean hasLibVorbis(Tools tools) throws IOException, InterruptedException {
+        synchronized (ENCODER_CHECK) {
+            if (libVorbis == null || !tools.ffmpeg().equals(libVorbisFor)) {
+                Process p = new ProcessBuilder(tools.ffmpeg().toString(), "-hide_banner", "-encoders").redirectErrorStream(true).start();
+                boolean found = false;
+                try (BufferedReader out = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while ((line = out.readLine()) != null) found |= line.contains(" libvorbis ");
+                }
+                p.waitFor();
+                libVorbis = found;
+                libVorbisFor = tools.ffmpeg();
+            }
+            return libVorbis;
+        }
     }
 
     /** " 42.7%" as 42, or -1 if yt-dlp didn't know the size. */

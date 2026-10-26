@@ -90,6 +90,9 @@ final class DownloadsPanel implements CuePanel {
                 if (r != null) c.text(r.message(), r.failed() ? RED : DIM);
             }
             c.space(2);
+            if (Downloader.lowQuality(tools)) {
+                c.text(Component.translatable("cuemymusic_downloads.panel.low_quality", Tools.qualityHint()), 0xFFE0B04A);
+            }
             c.text(Component.translatable("cuemymusic_downloads.panel.about"), 0xFF6A6A6A);
         }
         c.space(4);

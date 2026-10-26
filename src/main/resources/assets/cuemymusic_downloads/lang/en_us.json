@@ -36,5 +36,6 @@
 	"cuemymusic_downloads.panel.folder": "Open folder",
 	"cuemymusic_downloads.panel.about": "YouTube, SoundCloud, Bandcamp, and the other sites yt-dlp supports. A playlist link adds the whole playlist and makes a playlist here too. Songs play from the player only.",
 	"cuemymusic_downloads.panel.empty": "No downloads yet.",
-	"cuemymusic_downloads.panel.delete": "Delete download"
+	"cuemymusic_downloads.panel.delete": "Delete download",
+	"cuemymusic_downloads.panel.low_quality": "Your ffmpeg has no libvorbis, so downloads will sound worse. For full quality, run %s, then download again."
 }
