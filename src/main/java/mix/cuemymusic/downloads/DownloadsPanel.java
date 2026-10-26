@@ -110,8 +110,10 @@ final class DownloadsPanel implements CuePanel {
     }
 
     @Override
-    public List<Action> songActions(Track track) {
-        return List.of(new Action(tr("cuemymusic_downloads.panel.delete"), () -> delete(track)));
+    public Action deleteAction(List<Track> tracks) {
+        String label = tracks.size() == 1 ? tr("cuemymusic_downloads.panel.delete")
+                : tr("cuemymusic_downloads.panel.delete_many", tracks.size());
+        return new Action(label, () -> delete(tracks));
     }
 
     private void start(PanelCanvas c, String link) {
@@ -125,21 +127,29 @@ final class DownloadsPanel implements CuePanel {
         }
     }
 
-    private static void delete(Track track) {
-        String sound = track.location().toString();
+    /** Removes the songs' files, then reloads the pack once. */
+    private static void delete(List<Track> tracks) {
+        java.util.Set<String> sounds = new java.util.HashSet<>();
+        for (Track t : tracks) sounds.add(t.location().toString());
+        int removed = 0;
+        String last = null;
         for (DownloadPack.Song s : DownloadPack.songs()) {
-            if (!s.sound().equals(sound)) continue;
+            if (!sounds.contains(s.sound())) continue;
             try {
                 DownloadPack.remove(s);
-                Downloader.report(Component.translatable("cuemymusic_downloads.removed", s.title()), false);
+                removed++;
+                last = s.title();
             } catch (Exception e) {
                 DownloadsClient.LOG.warn("Couldn't remove {}", s.file(), e);
                 Downloader.report(Component.translatable("cuemymusic_downloads.failed", String.valueOf(e.getMessage())), true);
+                if (removed > 0) DownloadPack.apply();
                 return;
             }
-            DownloadPack.apply();
-            return;
         }
+        if (removed == 0) return;
+        Downloader.report(removed == 1 ? Component.translatable("cuemymusic_downloads.removed", last)
+                : Component.translatable("cuemymusic_downloads.removed_many", removed), false);
+        DownloadPack.apply();
     }
 
     private Tools tools() {
