@@ -20,6 +20,6 @@
 		"minecraft": "~26.3",
 		"java": ">=25",
 		"fabric-api": "*",
-		"cuemymusic": ">=1.2.0"
+		"cuemymusic": ">=1.3.0"
 	}
 }

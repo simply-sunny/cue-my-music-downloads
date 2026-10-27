@@ -16,7 +16,7 @@ Only download what you have the right to. Many sites don't allow it in their ter
 
 Client-side only.
 
-1. Install [Cue My Music](https://github.com/simply-sunny/cue-my-music) 1.2.0 or newer, with its requirements.
+1. Install [Cue My Music](https://github.com/simply-sunny/cue-my-music) 1.3.0 or newer, with its requirements.
 2. Install yt-dlp and ffmpeg. The add-on doesn't download them.
 
    | System | Command |
