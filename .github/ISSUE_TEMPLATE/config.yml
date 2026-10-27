@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Cue My Music
+    url: https://github.com/simply-sunny/cue-my-music/issues
+    about: Problems with the player itself, not downloading.

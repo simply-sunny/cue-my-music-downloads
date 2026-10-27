@@ -1,0 +1,42 @@
+name: Bug report
+description: Something doesn't work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [troubleshooting table](https://github.com/simply-sunny/cue-my-music-downloads#troubleshooting) first.
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft version
+      placeholder: "26.3"
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Cue My Music and add-on versions
+      placeholder: "Cue My Music 1.2.0, Downloads 1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: tools
+    attributes:
+      label: yt-dlp and ffmpeg versions, and OS
+      description: "`yt-dlp --version` and `ffmpeg -version`."
+      placeholder: "yt-dlp 2026.10.01, ffmpeg 8.0, macOS 27.2"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you expected, what you saw instead, and the link or search if it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: yt-dlp's output for a failed download is in `logs/latest.log`. Attach it, or paste a link.
