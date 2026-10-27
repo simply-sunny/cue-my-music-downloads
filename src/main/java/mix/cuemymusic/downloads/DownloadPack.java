@@ -63,7 +63,21 @@ final class DownloadPack {
     }
 
     /** The songs in the pack, in the order they were added. */
+    /** The songs as last read, and when: the Downloads page asks every frame, so the file is read at most once a second. */
+    private static List<Song> songs;
+    private static long readAt;
+
+    /** The downloaded songs, from the pack's credits file. */
     static synchronized List<Song> songs() {
+        long now = System.nanoTime();
+        if (songs == null || now - readAt > 1_000_000_000L) {
+            songs = List.copyOf(read());
+            readAt = now;
+        }
+        return songs;
+    }
+
+    private static List<Song> read() {
         List<Song> out = new ArrayList<>();
         Path file = credits();
         if (!Files.isRegularFile(file)) return out;
@@ -137,6 +151,7 @@ final class DownloadPack {
     }
 
     private static void write(List<Song> songs) throws IOException {
+        DownloadPack.songs = null;
         writeMeta();
         Path assets = root().resolve("assets").resolve(NAMESPACE);
         Files.createDirectories(assets);
