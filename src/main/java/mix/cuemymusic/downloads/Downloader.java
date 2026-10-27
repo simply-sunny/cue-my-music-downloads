@@ -39,6 +39,7 @@ final class Downloader {
     private static Process process;
     private static Thread worker;
     private static volatile boolean cancelled;
+    private static String current;
 
     private Downloader() {
     }
@@ -47,10 +48,16 @@ final class Downloader {
         return worker != null && worker.isAlive();
     }
 
+    /** The link being downloaded, or null. */
+    static synchronized String current() {
+        return running() ? current : null;
+    }
+
     /** Starts downloading {@code url}. Returns false if a download is already running. */
     static synchronized boolean start(String url, Tools tools) {
         if (running()) return false;
         cancelled = false;
+        current = url;
         worker = new Thread(() -> run(url, tools), "Cue My Music download");
         worker.setDaemon(true);
         worker.start();
