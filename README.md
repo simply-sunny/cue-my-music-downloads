@@ -1,10 +1,10 @@
 <h1 align="center">Cue My Music: Downloads</h1>
 
-<p align="center">An add-on for <a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> that saves songs from a link into a resource pack.<br>Fabric &amp; Quilt &nbsp;|&nbsp; 26.3</p>
+<p align="center">An add-on for <a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> that finds songs by name or link and saves them into a resource pack.<br>Fabric &amp; Quilt &nbsp;|&nbsp; 26.3</p>
 
 ---
 
-Paste a link into the **Downloads** page of the player, or type `/cmm download <link>`, and the song is downloaded with [yt-dlp](https://github.com/yt-dlp/yt-dlp), converted to Ogg with [ffmpeg](https://ffmpeg.org/), and added to a resource pack called **Cue My Music Downloads**. The pack is turned on for you, and the song shows up on the add-on's **Downloads** page in the player.
+Search for a song by name on the **Downloads** page of the player, or paste a link there or into `/cmm download <link>`, and the song is downloaded with [yt-dlp](https://github.com/yt-dlp/yt-dlp), converted to Ogg with [ffmpeg](https://ffmpeg.org/), and added to a resource pack called **Cue My Music Downloads**. The pack is turned on for you, and the song shows up on the add-on's **Downloads** page in the player.
 
 A playlist link downloads the whole playlist (up to 200 songs) and makes a Cue My Music playlist with the same name. Downloading it again later adds only the new songs.
 
@@ -31,7 +31,7 @@ The add-on looks for both tools on your `PATH`, and in `/opt/homebrew/bin`, `/us
 
 ## Use
 
-Open the player and click **Downloads** in the library. Paste a link and press Enter or **Download**. The page shows the download's progress, has **Cancel** while it runs, and lists your downloaded songs below. Right-click a song there and pick **Delete download** to remove it. **Open folder** opens the pack's folder. If yt-dlp or ffmpeg is missing, the page says which and shows the command to install it.
+Open the player and click **Downloads** in the library. Type a song or artist and press Enter or **Search**. Songs come from YouTube Music's song search, official releases first: the top result as a card with its cover, then the rest with title, artist, album and length. Slowed, sped-up, lyric, cover and similar uploads go to the bottom unless you search for them. Click **Download** on the top result, or the arrow on a row; songs you already have show a tick, and a song being downloaded shows its progress. **Clear** hides the results. If YouTube Music can't be reached, yt-dlp searches YouTube instead. To download from a link instead, paste it and press Enter or **Download**. The page shows the download's progress, has **Cancel** while it runs, and lists your downloaded songs below. Right-click a song there and pick **Delete download** to remove it, or select several (shift-click) and press Delete. **Open folder** opens the pack's folder. If yt-dlp or ffmpeg is missing, the page says which and shows the command to install it.
 
 The same things work from chat:
 
@@ -50,6 +50,13 @@ The same things work from chat:
 - Live streams and anything over an hour are skipped.
 - The title is the track name if the site has one, else the video title. The artist is the site's artist, else the uploader (YouTube's "Artist - Topic" channels become "Artist").
 - Downloading the same link again replaces the old copy.
+
+Downloaded songs play from Cue My Music's player only; the game never picks them for its own music. With Cue My Music's defaults they also:
+
+- **Automix:** play at matched loudness and blend into the next downloaded song over up to 8 seconds.
+- **Stay out of recordings:** play from a separate process, so a recorder of the game's own audio (rec-util, or OBS's application audio capture) leaves them out, while game music and discs are still recorded. Recorders of all system audio still pick them up.
+
+Both are in Cue My Music's **Settings** (**Automix add-on songs**, **Keep add-on songs out of recordings**).
 
 After each download or removal, resources reload so the player sees the change. **That stops whatever is playing**, as any resource reload does.
 
