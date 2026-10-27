@@ -40,6 +40,8 @@ public final class DownloadsClient implements ClientModInitializer {
 
     private static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommands.literal("cmm")
+                // Off with vanilla music on.
+                .requires(source -> !mix.cuemymusic.CueConfig.INSTANCE.vanilla)
                 .then(ClientCommands.literal("download")
                         .then(ClientCommands.literal("cancel").executes(c -> {
                             if (!Downloader.cancel()) {
