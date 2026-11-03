@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Find songs by name or link and save them into a resource pack for Cue My Music."><title>Changelog · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><label for="search">Find a page</label><input id="search" type="search" placeholder="Search documentation"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./changelog.html" aria-current="page">Changelog</a><a href="./develop.html">Develop</a><a href="./license.html">License</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><p class="breadcrumb meta">Documentation / Changelog</p><article class="prose"><h1>Changelog</h1><p>All notable changes to Cue My Music: Downloads are documented here. This project follows <a href="https://semver.org/">Semantic Versioning</a>.</p>
+<h2 id="unreleased">[Unreleased]</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li><strong>Tabs on the Downloads page</strong>, styled as the player's Mode switch: <strong>Find songs</strong> for search, links and progress, and <strong>Downloaded</strong> for the songs already saved, with a box to filter them by title or artist.</li>
+<li>The Downloads pack has no picture any more: it looked like a player and stood in as every song's cover.</li>
+<li><strong>Song covers</strong>: every song gets its own cover, shown in Cue My Music: its album's cover from iTunes where it has the song, otherwise its YouTube thumbnail cut square. Songs downloaded before get theirs in the background, a few a minute, and thumbnails are swapped for album covers where one is found.</li>
+<li><strong>More search tools</strong>: sort results by relevance, plays, length or title; <strong>Show more</strong> for up to 30 results; and recent searches as buttons.</li>
+</ul>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li>Downloading outside Add-ons mode says to switch to Add-ons to play the songs.</li>
+<li>The README no longer says downloads play from the player only: Add-ons mode picks them.</li>
+<li>Downloading or deleting songs no longer reloads every resource (with a Cue My Music that has <code>CueSounds</code>): only the song list is read again, so it's quick and the song that's on keeps playing instead of skipping.</li>
+<li>Downloading an artist no longer saves the same song twice when it's on both a single and an album, or is already downloaded.</li>
+</ul>
+<h2 id="110-2026-10-28">[1.1.0] - 2026-10-28</h2>
+<p>Requires Cue My Music 1.3.0 or newer.</p>
+<h3 id="added_1">Added</h3>
+<ul>
+<li><strong>Artist downloads</strong>: a YouTube channel or artist link, or an <strong>Artist → Download all</strong> card in search results, downloads the whole channel (up to 1000 songs). Songs already in the pack are skipped, so running it again only adds what's new. Cue My Music already groups them by artist, so no playlist is made.</li>
+<li><strong>Spotify links</strong>, through spotdl: songs, albums, playlists and artists. spotdl only reads the Spotify metadata; the audio comes from a YouTube Music match. Spotify playlists and albums make a Cue My Music playlist named after them. Install spotdl with <code>pipx install spotdl</code>; it's optional, and only Spotify links need it.</li>
+<li><strong>Check uncertain matches</strong>: when a Spotify song's YouTube match isn't clear (a remix, a live version, a different length), the Downloads page shows both and asks <strong>Keep</strong>, <strong>Skip</strong>, or <strong>Skip all</strong> before continuing.</li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li>Shorter, plainer text: the Downloads page help, chat messages while downloading, and the mod list description.</li>
+<li>Songs are converted to Ogg as each one finishes, not after the whole link, so long artist and playlist downloads use less disk and cancelling keeps the finished songs.</li>
+<li>Spotify songs already in the pack are skipped, like artist downloads.</li>
+</ul>
+<h2 id="100-2026-10-27">[1.0.0] - 2026-10-27</h2>
+<p>First release. Requires Cue My Music 1.3.0 or newer.</p>
+<h3 id="added_2">Added</h3>
+<ul>
+<li><strong>Search by name</strong>: type a song or artist on the Downloads page. Results come from YouTube Music's song search, official releases first, with covers, and fall back to YouTube if YouTube Music can't be reached.</li>
+<li><strong>Downloads page</strong> in the player, with progress, Cancel, a tick on songs you already have, and the list of downloaded songs.</li>
+<li><strong>Downloads into a resource pack</strong> with yt-dlp and ffmpeg, from the Downloads page or <code>/cmm download &lt;link&gt;</code>.</li>
+<li><strong>Playlists</strong>: a playlist link downloads every song (up to 200) and makes a Cue My Music playlist with the same name. Downloading it again adds only the new songs.</li>
+<li><strong>Delete several downloads at once</strong>: shift-click to select, then press Delete.</li>
+<li><strong>Sound quality</strong>: songs are encoded at libvorbis quality 10, through <code>oggenc</code> when ffmpeg lacks libvorbis.</li>
+<li><strong>Vanilla music</strong>: with Cue My Music's Vanilla music switch on, the <code>/cmm download</code> commands are hidden.</li>
+</ul></article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/blob/main/README.md">Project documentation ↗</a></footer></main></div></body></html>

@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Find songs by name or link and save them into a resource pack for Cue My Music."><title>Troubleshooting · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><label for="search">Find a page</label><input id="search" type="search" placeholder="Search documentation"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html" aria-current="page">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a><a href="./license.html">License</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><p class="breadcrumb meta">Documentation / Troubleshooting</p><article class="prose"><h1>Troubleshooting</h1>
+<div class="prose" id="troubleshooting"><div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Couldn't find yt-dlp</code> or <code>ffmpeg</code></td>
+<td>Install it with the command shown. If it's somewhere unusual, link it into <code>/usr/local/bin</code> or <code>~/.local/bin</code>.</td>
+</tr>
+<tr>
+<td><code>Couldn't find spotdl</code>, or a Spotify link says it needs it</td>
+<td>Install it with <code>pipx install spotdl</code>. The add-on looks in <code>~/.local/bin</code> too.</td>
+</tr>
+<tr>
+<td>A Spotify song matched the wrong video</td>
+<td>Press <strong>Skip</strong> at the question. To skip every uncertain match in the link, press <strong>Skip all</strong>.</td>
+</tr>
+<tr>
+<td><code>Download failed</code> from YouTube</td>
+<td>Update yt-dlp (<code>brew upgrade yt-dlp</code>, <code>winget upgrade yt-dlp.yt-dlp</code>, or <code>yt-dlp -U</code>). Sites change often.</td>
+</tr>
+<tr>
+<td>The song isn't in the player</td>
+<td>Check that <strong>Cue My Music Downloads</strong> is on under Resource Packs.</td>
+</tr>
+</tbody>
+</table></div>
+<p>yt-dlp's full output for a failed download is in <code>.minecraft/logs/latest.log</code>.</p></div></article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/blob/main/README.md">Project documentation ↗</a></footer></main></div></body></html>

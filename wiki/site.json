@@ -1,0 +1,9 @@
+{
+  "name": "Cue My Music: Downloads",
+  "description": "Find songs by name or link and save them into a resource pack for Cue My Music.",
+  "repo": "https://github.com/simply-sunny/cue-my-music-downloads",
+  "source_dir": "..",
+  "downloads": {
+    "GitHub Releases": "https://github.com/simply-sunny/cue-my-music-downloads/releases"
+  }
+}
