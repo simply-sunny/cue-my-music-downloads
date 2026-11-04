@@ -1,50 +1,31 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Find songs by name or link and save them into a resource pack for Cue My Music."><title>Use · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><label for="search">Find a page</label><input id="search" type="search" placeholder="Search documentation"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html" aria-current="page">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a><a href="./license.html">License</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><p class="breadcrumb meta">Documentation / Use</p><article class="prose"><h1>Use</h1>
-<div class="prose" id="use"><p>Open the player and click <strong>Downloads</strong> in the library. The page has two tabs: <strong>Download</strong> for finding songs, and <strong>Downloads</strong> for the songs already saved.</p>
-<p>On <strong>Download</strong>, type a song or artist and press Enter or <strong>Search</strong>. Songs come from YouTube Music's song search, official releases first: the top result as a card with its cover, then the rest with title, artist, album and length. Slowed, sped-up, lyric, cover and similar uploads go to the bottom unless you search for them. Click <strong>Download</strong> on the top result, or the arrow on a row; songs you already have show a tick, and a song being downloaded shows its progress. <strong>Sort</strong> reorders the results by relevance, plays, length or title, and <strong>Show more</strong> asks for up to 30 results. Past searches stay as buttons for the session. When the search is about an artist, an <strong>Artist</strong> card comes first, with <strong>Download all</strong> for their whole channel. <strong>Clear</strong> hides the results. If YouTube Music can't be reached, yt-dlp searches YouTube instead. To download from a link instead, paste it and press Enter or <strong>Download</strong>. The tab shows the download's progress and has <strong>Cancel</strong> while it runs. If yt-dlp or ffmpeg is missing, it says which and shows the command to install it.</p>
-<p>On <strong>Downloads</strong>, your songs are listed below a filter box: type to narrow them by title or artist. Right-click a song and pick <strong>Delete download</strong> to remove it, or select several (shift-click) and press Delete. <strong>Open folder</strong> opens the pack's folder. A running download's progress shows on this tab too.</p>
-<p>Spotify links are read with spotdl, then each song is matched to a YouTube Music result. A match that isn't clear (a remix, a live version, a different length) is shown with both titles, artists and lengths, and asks <strong>Keep</strong>, <strong>Skip</strong>, or <strong>Skip all</strong>; the download waits until you answer. <strong>Skip all</strong> skips the rest of the uncertain matches in that link. Everything else downloads without asking. A Spotify playlist or album makes a Cue My Music playlist named after it; a Spotify artist adds the songs to that artist, like a YouTube artist link.</p>
-<p>The same things work from chat:</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Find songs by name or link and save them into a resource pack for Cue My Music."><title>Use · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><label for="search">Find a page</label><input id="search" type="search" placeholder="Search documentation"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html" aria-current="page">Use</a><a href="./configure.html">The pack</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Use</h1>
+<p>Open the player and click <strong>Downloads</strong> in the library. It has two tabs.</p>
+<h2 id="download">Download</h2>
+<ul>
+<li>Type a song or artist and press Enter. Results come from YouTube Music, official releases first; slowed, sped-up, lyric and cover uploads sink unless you ask for them. If YouTube Music can't be reached, YouTube is searched instead.</li>
+<li>Download the top card or a row's arrow. A tick means you have it already. <strong>Sort</strong>, <strong>Show more</strong> (up to 30) and past-search buttons sit above the list.</li>
+<li>An artist search puts an <strong>Artist</strong> card first, with <strong>Download all</strong>.</li>
+<li>Paste a link instead and press Enter. <strong>Cancel</strong> stops it and keeps what finished. Missing tools are named, with the command to install them.</li>
+<li>Spotify songs are matched to YouTube Music. Unclear matches (remix, live, different length) wait for <strong>Keep</strong>, <strong>Skip</strong> or <strong>Skip all</strong>.</li>
+</ul>
+<h2 id="downloads">Downloads</h2>
+<p>Your songs, with a filter box. Right-click → <strong>Delete download</strong>, or select several and press Delete. <strong>Open folder</strong> opens the pack.</p>
+<h2 id="commands">Commands</h2>
 <div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Does</th>
-</tr>
-</thead>
+<thead><tr><th>Command</th><th>Does</th></tr></thead>
 <tbody>
-<tr>
-<td><code>/cmm download &lt;link&gt;</code></td>
-<td>Downloads the song, or every song in a playlist, artist channel or Spotify link. Progress shows above the hotbar. When a Spotify match needs checking, the Downloads page asks Keep or Skip.</td>
-</tr>
-<tr>
-<td><code>/cmm download cancel</code></td>
-<td>Stops the download, and answers the match question with Skip.</td>
-</tr>
-<tr>
-<td><code>/cmm downloads</code></td>
-<td>Lists downloaded songs. Click the pack name to open its folder.</td>
-</tr>
-<tr>
-<td><code>/cmm downloads remove &lt;song&gt;</code></td>
-<td>Deletes a downloaded song.</td>
-</tr>
-</tbody>
-</table></div>
+<tr><td><code>/cmm download &lt;link&gt;</code></td><td>Downloads it; progress shows above the hotbar.</td></tr>
+<tr><td><code>/cmm download cancel</code></td><td>Stops it; also answers a pending match with Skip.</td></tr>
+<tr><td><code>/cmm downloads</code></td><td>Lists songs. Click the pack name to open its folder.</td></tr>
+<tr><td><code>/cmm downloads remove &lt;song&gt;</code></td><td>Deletes one.</td></tr>
+</tbody></table></div>
+<h2 id="rules">Rules</h2>
 <ul>
-<li>One download runs at a time.</li>
-<li>A video link that also names a playlist (<code>watch?v=…&amp;list=…</code>) downloads just the video. Use the playlist's own link (<code>playlist?list=…</code>) for all of it.</li>
-<li>Videos in a playlist that can't be downloaded (private, removed, region-locked) are skipped, and chat says how many.</li>
-<li>Cancelling keeps the songs that had finished.</li>
-<li>Spotify links need spotdl. Without it, the page and chat say how to install it.</li>
-<li>Spotify matching searches YouTube Music, so a song that isn't on YouTube (or is there under a very different title) is reported as not found.</li>
-<li>Live streams and anything over an hour are skipped.</li>
-<li>The title is the track name if the site has one, else the video title. The artist is the site's artist, else the uploader (YouTube's "Artist - Topic" channels become "Artist"). Spotify downloads keep Spotify's title, artist and album.</li>
-<li>Downloading the same song again replaces the old copy. Artist and Spotify links skip songs already in the pack.</li>
+<li>One download at a time. Live streams and anything over an hour are skipped, as are private, removed or region-locked videos in a playlist.</li>
+<li><code>watch?v=…&amp;list=…</code> downloads the one video; use <code>playlist?list=…</code> for the list.</li>
+<li>Title and artist come from the site's track data, else the video title and uploader ("Artist - Topic" becomes "Artist"). Spotify keeps Spotify's.</li>
+<li>Downloading a song again replaces it; artist and Spotify links skip songs you have.</li>
+<li>Each download or removal reloads resources, <strong>which stops what's playing</strong>.</li>
+<li>With Cue My Music's defaults, downloads automix (matched loudness, blends up to 8 s) and stay out of game-audio recordings (rec-util, OBS app capture). Both are in its Settings.</li>
 </ul>
-<p>Downloaded songs play in Add-ons mode only. With Cue My Music's defaults they also:</p>
-<ul>
-<li><strong>Automix:</strong> play at matched loudness and blend into the next downloaded song over up to 8 seconds.</li>
-<li><strong>Stay out of recordings:</strong> play from a separate process, so a recorder of the game's own audio (rec-util, or OBS's application audio capture) leaves them out, while game music and discs are still recorded. Recorders of all system audio still pick them up.</li>
-</ul>
-<p>Both are in Cue My Music's <strong>Settings</strong> (<strong>Automix add-on songs</strong>, <strong>Keep add-on songs out of recordings</strong>).</p>
-<p>After each download or removal, resources reload so the player sees the change. <strong>That stops whatever is playing</strong>, as any resource reload does.</p></div></article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/blob/main/README.md">Project documentation ↗</a></footer></main></div></body></html>
+</article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report an issue ↗</a></footer></main></div></body></html>

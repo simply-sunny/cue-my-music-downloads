@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Split a mod repository's README into static wiki source pages."""
 from pathlib import Path
-import html,json,re,sys
+import html,json,re,sys,hashlib
 from urllib.parse import urljoin,urlsplit
 try:
     import markdown
@@ -18,12 +18,27 @@ body=readme.split('\n---\n',1)[-1] if '\n---\n' in readme else readme
 parts=re.split(r'^## (.+)\s*$',body,flags=re.M)
 sections={parts[i].strip():parts[i+1].strip() for i in range(1,len(parts),2)}
 intro=parts[0].strip()
-assign=site.get('sections',{'overview':['Features'],'install':['Install'],'use':['Use','Controls'],'configure':['Configure','The pack'],'troubleshooting':['Troubleshooting'],'develop':['Develop','Build'],'limits':['Limits'],'license':['License']})
+assign=site.get('sections',{'overview':['Features'],'install':['Install'],'use':['Use','Controls'],'configure':['Configure','The pack'],'troubleshooting':['Troubleshooting','Limits'],'develop':['Develop','Build','License']})
 names={'overview':'Overview','install':'Install','use':'Use','configure':'Configure','troubleshooting':'Troubleshooting','develop':'Develop','limits':'Limits','license':'License','recordings':'Recordings','streaming':'Streaming','uploader':'YouTube uploader'}
 # Remove stale generated pages from a prior sync, but keep custom pages.
 manifest=root/'.synced-pages.json'
 old=json.loads(manifest.read_text()) if manifest.exists() else []
 new=[]
+hash_file=root/'.synced-content.json'
+hashes=json.loads(hash_file.read_text()) if hash_file.exists() else {}
+updated_hashes=dict(hashes)
+protected=set()
+for path in (root/'content').glob('*.html'):
+ text=path.read_text()
+ digest=hashlib.sha256(path.read_bytes()).hexdigest()
+ if ('cmm-player' in text or 'cze-view' in text or 'cpc-chart' in text or 'osh-view' in text or 'data-wiki-preserve' in text or (path.stem in hashes and digest != hashes[path.stem])):
+  protected.add(path.stem)
+  print(f'Preserved authored page: {path.name}; edit it manually to incorporate README changes.')
+def save_page(page, text):
+ if page in protected: return
+ path=root/'content'/f'{page}.html'
+ path.write_text(text)
+ updated_hashes[page]=hashlib.sha256(path.read_bytes()).hexdigest()
 page_for_heading={}
 for page,titles in assign.items():
  for title in titles:
@@ -55,13 +70,9 @@ for page,titles in assign.items():
     if page=='overview':
         result+='<p class="lead">'+html.escape(site['description'])+'</p>\n'+render(intro)+'\n'
         links=site.get('downloads',{})
-        result+='<div class="actions"><a href="./install.html">Install ↗</a>'
+        result+='<div class="actions">'
         for label,url in links.items():result+='<a href="'+html.escape(url,quote=True)+'">'+html.escape(label)+' ↗</a>'
         result+='</div>\n'
-    if page=='install':
-        result+='''<h2>Recommended: Prism Launcher</h2><ol><li>Create or select an instance with the Minecraft version and loader listed below.</li><li>Open <strong>Edit → Mods → Download Mods</strong>. Find the mod on Modrinth or CurseForge where it is listed, and install its required dependencies.</li><li>If the mod is not listed there, download its JAR from the project’s release page and add it to the instance’s mods folder.</li><li>Complete the project-specific setup below, then launch the instance.</li></ol><p><a href="https://prismlauncher.org/download/">Get Prism Launcher ↗</a></p>'''
-        links=site.get('downloads',{})
-        result+='<h2>Downloads</h2><ul>'+''.join('<li><a href="'+html.escape(url,quote=True)+'">'+html.escape(label)+'</a></li>' for label,url in links.items())+'</ul>'
     if len(chunks)==1:
         # Keep the source's heading anchor without repeating the page title.
         source=chunks[0];heading=titles[0] if titles[0] in sections else next(t for t in titles if t in sections)
@@ -69,17 +80,19 @@ for page,titles in assign.items():
         result+='<div class="prose" id="'+markdown.extensions.toc.slugify(heading,'-')+'">'+render(source)+'</div>'
     else:
         result+=render('\n\n'.join(chunks))
-    (root/'content'/f'{page}.html').write_text(result)
+    save_page(page,result)
     new.append(page)
 if (repo/'CHANGELOG.md').is_file():
     result='<h1>Changelog</h1>'+render(re.sub(r'^# Changelog\s*','',(repo/'CHANGELOG.md').read_text(),count=1))
-    (root/'content/changelog.html').write_text(result);new.append('changelog')
+    save_page('changelog',result);new.append('changelog')
 else:
-    (root/'content/changelog.html').write_text('<h1>Changelog</h1><p><a href="'+site['repo']+'/releases">Read release notes ↗</a></p>');new.append('changelog')
+    save_page('changelog','<h1>Changelog</h1><p><a href="'+site['repo']+'/releases">Read release notes ↗</a></p>');new.append('changelog')
 for page in old:
-    if page not in new:
+    if page not in new and page not in protected:
         for p in [root/'content'/f'{page}.html',root/'public'/f'{page}.html']:
             if p.exists():p.unlink()
+new=list(dict.fromkeys(new+sorted(protected)))
+hash_file.write_text(json.dumps(updated_hashes,indent=2)+'\n')
 manifest.write_text(json.dumps(new,indent=2)+'\n')
 (root/'SOURCE.md').write_text('# Documentation source\n\nPages are derived from the local repository README.md and CHANGELOG.md. site.json controls page grouping and download links. Run `python3 sync-from-readme.py` then `python3 build.py` to refresh them. Existing source documents are never changed.\n')
 print(f'Synced {len(new)} pages for {site["name"]}')

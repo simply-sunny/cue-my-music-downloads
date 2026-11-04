@@ -9,3 +9,5 @@ Preview from this directory with `python3 dev/preview.py --root public --port 80
 The root .github/workflows/wiki.yml builds and checks this wiki, then uploads wiki/public to GitHub Pages. Select GitHub Actions in repository Settings → Pages when ready. Nothing is published until that workflow runs.
 
 The shared style uses an 8px spacing scale and self-hosted IBM Plex. Only the public directory is a deployment artifact. See dev/README.md for inspection controls and limitations.
+
+README refresh preserves pages with demo mounts, data-wiki-preserve annotations, or changes since the last import. It reports each preserved page; update those pages manually from the source. .synced-content.json tracks imported content; .generated-pages.json tracks build-owned HTML so removing a source page also removes its old output.
