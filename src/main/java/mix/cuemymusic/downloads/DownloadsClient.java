@@ -24,7 +24,7 @@ import net.minecraft.network.chat.Component;
 import mix.cuemymusic.api.CuePanels;
 
 /**
- * {@code /cmm download <link>} (a video or a playlist), {@code /cmm download cancel},
+ * {@code /cmm download <link>} (a video, playlist, artist or Spotify link), {@code /cmm download cancel},
  * {@code /cmm downloads} and {@code /cmm downloads remove <song>}. They join
  * Cue My Music's own {@code /cmm} commands.
  */
@@ -34,6 +34,8 @@ public final class DownloadsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         DownloadPack.refreshMeta();
+        // Songs downloaded before covers were saved get theirs.
+        DownloadPack.fillCovers();
         CuePanels.register(new DownloadsPanel());
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registry) -> register(dispatcher));
     }

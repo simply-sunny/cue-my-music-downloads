@@ -1,7 +1,6 @@
 package mix.cuemymusic.downloads;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -56,6 +55,14 @@ final class DownloadPack {
 
     private static Path music() {
         return root().resolve("assets").resolve(NAMESPACE).resolve("sounds").resolve("music");
+    }
+
+    private static Path covers() {
+        return root().resolve("assets").resolve(NAMESPACE).resolve("covers");
+    }
+
+    private static Path cover(Song song) {
+        return covers().resolve(song.file() + ".png");
     }
 
     private static Path credits() {
@@ -123,7 +130,67 @@ final class DownloadPack {
         List<Song> songs = new ArrayList<>(songs());
         songs.removeIf(s -> s.file().equals(song.file()));
         Files.deleteIfExists(music().resolve(song.file() + ".ogg"));
+        Files.deleteIfExists(cover(song));
         write(songs);
+    }
+
+    private static final java.util.concurrent.atomic.AtomicBoolean FILLING = new java.util.concurrent.atomic.AtomicBoolean();
+
+    /**
+     * In the background, gets a cover for each YouTube song without one, then
+     * names them in the credits and has Cue My Music read them. Songs without
+     * a cover to find keep the pack's picture. A song's album cover comes from
+     * iTunes where it has the song, otherwise the video's thumbnail is used.
+     */
+    static void fillCovers() {
+        if (!FILLING.compareAndSet(false, true)) return;
+        Thread t = new Thread(() -> {
+            int got = 0;
+            try {
+                // Songs already looked up on iTunes, so each is asked about once.
+                Path checkedFile = covers().resolve("album-checked.txt");
+                java.util.Set<String> checked = Files.isRegularFile(checkedFile)
+                        ? new java.util.HashSet<>(Files.readAllLines(checkedFile)) : new java.util.HashSet<>();
+                boolean itunes = true;
+                for (Song s : songs()) {
+                    // The album's cover first, where iTunes has the song; else the video's thumbnail.
+                    byte[] png = null;
+                    if (!checked.contains(s.file()) && itunes) {
+                        try {
+                            png = Covers.albumCover(s.artist(), s.title(), 128);
+                            checked.add(s.file());
+                        } catch (java.io.IOException e) {
+                            // Unreachable or asked to slow down: the rest are looked up next time.
+                            DownloadsClient.LOG.info("Stopped looking up album covers for now: {}", e.getMessage());
+                            itunes = false;
+                        }
+                        // iTunes allows about 20 searches a minute.
+                        Thread.sleep(3000);
+                    }
+                    if (png == null && s.sourceId().startsWith("youtube_") && !Files.isRegularFile(cover(s))) {
+                        png = Covers.songCover(s.sourceId().substring("youtube_".length()));
+                    }
+                    if (png == null) continue;
+                    Files.createDirectories(covers());
+                    Files.write(cover(s), png);
+                    got++;
+                }
+                Files.createDirectories(covers());
+                Files.write(checkedFile, checked);
+                if (got > 0) {
+                    synchronized (DownloadPack.class) {
+                        write(new ArrayList<>(songs()));
+                    }
+                    Minecraft.getInstance().execute(DownloadPack::refreshSounds);
+                }
+            } catch (Exception e) {
+                DownloadsClient.LOG.warn("Couldn't save song covers", e);
+            } finally {
+                FILLING.set(false);
+            }
+        }, "Cue My Music song covers");
+        t.setDaemon(true);
+        t.start();
     }
 
     /** Rewrites pack.mcmeta for this game version, if the pack exists, so a game update doesn't mark it incompatible. */
@@ -136,13 +203,17 @@ final class DownloadPack {
         }
     }
 
-    /** Turns the pack on if it's off, then reloads resources so its songs show up. Call on the client thread. */
+    /**
+     * Turns the pack on if it's off, then picks up its songs. Call on the
+     * client thread. With the pack already on, only the sound list is read
+     * again: a full resource reload is slow and stops the song that's on.
+     */
     static void apply() {
         Minecraft mc = Minecraft.getInstance();
         PackRepository repo = mc.getResourcePackRepository();
         repo.reload();
         if (repo.getSelectedIds().contains(ID)) {
-            mc.reloadResourcePacks();
+            if (!refreshSounds()) mc.reloadResourcePacks();
         } else if (repo.addPack(ID)) {
             mc.options.updateResourcePacks(repo);
         } else {
@@ -168,6 +239,7 @@ final class DownloadPack {
             t.addProperty("title", s.title());
             if (!s.artist().isEmpty()) t.addProperty("artist", s.artist());
             if (!s.album().isEmpty()) t.addProperty("album", s.album());
+            if (Files.isRegularFile(cover(s))) t.addProperty("art", NAMESPACE + ":covers/" + s.file() + ".png");
             t.addProperty("source", s.source());
             t.addProperty("id", s.sourceId());
             tracks.add(s.sound(), t);
@@ -198,12 +270,8 @@ final class DownloadPack {
         meta.add("pack", pack);
         writeJson(root().resolve("pack.mcmeta"), meta);
 
-        Path icon = root().resolve("pack.png");
-        if (!Files.exists(icon)) {
-            try (InputStream in = DownloadPack.class.getResourceAsStream("/assets/cuemymusic_downloads/icon.png")) {
-                if (in != null) Files.copy(in, icon);
-            }
-        }
+        // No pack picture: it looked like a player and stood in as every song's cover. Songs have their own now.
+        Files.deleteIfExists(root().resolve("pack.png"));
     }
 
     private static void writeJson(Path file, JsonObject json) throws IOException {
@@ -232,5 +300,15 @@ final class DownloadPack {
     private static String text(JsonObject o, String field) {
         JsonElement e = o.get(field);
         return e != null && e.isJsonPrimitive() ? e.getAsString() : "";
+    }
+
+    /** Re-reads just the sound list, if this Cue My Music can and the pack's songs are loaded already. */
+    private static boolean refreshSounds() {
+        try {
+            return mix.cuemymusic.api.CueSounds.refresh(NAMESPACE);
+        } catch (NoClassDefFoundError e) {
+            // An older Cue My Music, without it.
+            return false;
+        }
     }
 }

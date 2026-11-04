@@ -23,8 +23,10 @@ import com.google.gson.JsonParser;
  * YouTube instead. Only the newest search's results are kept.
  */
 final class Search {
-    /** How many results a search shows. */
+    /** How many results a search shows at first. */
     static final int RESULTS = 10;
+    /** How many results **Show more** can ask for. */
+    static final int MAX_RESULTS = 30;
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(8)).followRedirects(HttpClient.Redirect.NORMAL).build();
     /** YouTube Music's search endpoint, and the filter for its Songs tab. */
@@ -34,17 +36,31 @@ final class Search {
     /**
      * One song found: its video id, title, artist, album (may be empty), length
      * in seconds (NaN if unknown), plays as YouTube Music shows them ("287M
-     * plays"; may be empty), cover art link (may be empty), and the link to download.
+     * plays"; may be empty), cover art link (may be empty), the link to
+     * download, the artist's channel (may be empty), every artist it credits
+     * that has a page, and its album's page id (may be empty).
      */
-    record Result(String id, String title, String artist, String album, double seconds, String plays, String art, String url) {
+    record Result(String id, String title, String artist, String album, double seconds, String plays, String art, String url,
+            String artistId, List<Artist> artists, String albumId) {
         /** The id the download pack keeps for it, to tell if it's already downloaded. */
         String sourceId() {
             return "youtube_" + id;
         }
     }
 
-    /** What the page shows: the query, whether it's still running, and the results or why there are none. */
-    record State(String query, boolean running, List<Result> results, String error) {
+    /** An artist the search found, whose whole channel can be downloaded. */
+    record Artist(String name, String id) {
+        String url() {
+            return "https://music.youtube.com/channel/" + id;
+        }
+    }
+
+    /**
+     * What the page shows: the query, whether it's still running, the results or
+     * why there are none, the artist to offer a whole-catalogue download for,
+     * and how many results were asked for.
+     */
+    record State(String query, boolean running, List<Result> results, Artist artist, String error, int limit) {
     }
 
     private static volatile State state;
@@ -52,6 +68,14 @@ final class Search {
     private static Process process;
 
     private Search() {
+    }
+
+    /**
+     * Candidates for an automatic match, best first. Unlike the page's search
+     * this keeps no state, so a Spotify track can be matched while a download runs.
+     */
+    static List<Result> query(String query) throws Exception {
+        return officialFirst(youTubeMusic(query, RESULTS), query);
     }
 
     static State state() {
@@ -65,37 +89,75 @@ final class Search {
     }
 
     /** Starts searching for {@code query}, replacing any search still running. */
-    static synchronized void start(String query, Tools tools) {
+    static void start(String query, Tools tools) {
+        start(query, tools, RESULTS);
+    }
+
+    /** Starts searching for {@code query}, asking for up to {@code limit} results. */
+    static synchronized void start(String query, Tools tools, int limit) {
         long mine = ++generation;
         stopProcess();
-        state = new State(query, true, List.of(), null);
-        Thread t = new Thread(() -> run(mine, query, tools), "Cue My Music search");
+        state = new State(query, true, List.of(), null, null, limit);
+        Thread t = new Thread(() -> run(mine, query, tools, limit), "Cue My Music search");
         t.setDaemon(true);
         t.start();
     }
 
-    private static void run(long mine, String query, Tools tools) {
+    private static void run(long mine, String query, Tools tools, int limit) {
         List<Result> results = List.of();
         String error = null;
         try {
-            results = youTubeMusic(query);
+            results = youTubeMusic(query, limit);
         } catch (Exception e) {
             DownloadsClient.LOG.warn("YouTube Music search for {} failed, trying yt-dlp", query, e);
         }
         if (results.isEmpty() && tools != null) {
             try {
-                results = ytDlp(mine, query, tools);
+                results = ytDlp(mine, query, tools, limit);
             } catch (Exception e) {
                 DownloadsClient.LOG.warn("Search for {} failed", query, e);
                 error = String.valueOf(e.getMessage());
             }
         }
         results = officialFirst(results, query);
+        Artist artist = artist(results, query);
         synchronized (Search.class) {
             if (mine != generation) return;
             process = null;
-            state = new State(query, false, List.copyOf(results), results.isEmpty() ? error : null);
+            state = new State(query, false, List.copyOf(results), artist, results.isEmpty() ? error : null, limit);
         }
+    }
+
+    /**
+     * The artist to offer "download all" for: the first result's artist when the
+     * search is about them. The name comes from the song row, not the artist
+     * page, because YouTube Music sometimes shows a different name there
+     * (C418's page is "Daniel Rosenfeld") than on the artist's songs.
+     */
+    static Artist artist(List<Result> results, String query) {
+        for (Result r : results) {
+            if (r.artistId().isBlank() || r.artist().isBlank()) continue;
+            if (related(query, r.artist())) return new Artist(r.artist(), r.artistId());
+        }
+        return null;
+    }
+
+    /** True if one phrase's words all appear in the other, so "minecraft c418" matches C418 but "aria math" doesn't. */
+    static boolean related(String a, String b) {
+        String x = words(a), y = words(b);
+        return !x.isBlank() && !y.isBlank() && (contains(x, y) || contains(y, x));
+    }
+
+    private static String words(String s) {
+        return s.toLowerCase(java.util.Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]+", " ").strip();
+    }
+
+    private static boolean contains(String haystack, String needle) {
+        List<String> have = List.of(haystack.split(" "));
+        for (String w : needle.split(" ")) {
+            if (!have.contains(w)) return false;
+        }
+        return true;
     }
 
     /** Words in a title that mark a re-upload or an edit rather than the song itself. */
@@ -140,7 +202,7 @@ final class Search {
 
     // ---------------------------------------------------------------- YouTube Music
 
-    private static List<Result> youTubeMusic(String query) throws Exception {
+    private static List<Result> youTubeMusic(String query, int limit) throws Exception {
         JsonObject body = new JsonObject();
         JsonObject client = new JsonObject();
         client.addProperty("clientName", "WEB_REMIX");
@@ -159,55 +221,115 @@ final class Search {
         HttpResponse<String> response = HTTP.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) throw new IllegalStateException("HTTP " + response.statusCode());
         List<Result> results = new ArrayList<>();
-        collect(JsonParser.parseString(response.body()), results);
+        collect(JsonParser.parseString(response.body()), results, limit);
         return results;
     }
 
     /** Finds each song row in the response, wherever it is. */
-    private static void collect(JsonElement e, List<Result> out) {
-        if (out.size() >= RESULTS) return;
+    private static void collect(JsonElement e, List<Result> out, int limit) {
+        if (out.size() >= limit) return;
         if (e instanceof JsonObject o) {
             if (o.get("musicResponsiveListItemRenderer") instanceof JsonObject row) {
                 Result r = row(row);
                 if (r != null) out.add(r);
                 return;
             }
-            for (var entry : o.entrySet()) collect(entry.getValue(), out);
+            for (var entry : o.entrySet()) collect(entry.getValue(), out, limit);
         } else if (e instanceof JsonArray a) {
-            for (JsonElement x : a) collect(x, out);
+            for (JsonElement x : a) collect(x, out, limit);
         }
     }
 
-    /** A row's columns: the title, then "Artist • Album • 3:40", then "287M plays". */
+    /** A search's song row. */
     private static Result row(JsonObject row) {
+        return row(row, List.of(), "", "");
+    }
+
+    /**
+     * A song row, from a search, an artist's songs, an album or a playlist:
+     * the title, then columns that hold its artists, album, plays and length
+     * in an order that differs by page. Artists and the album are found by
+     * what they link to. A row naming no artist gets {@code byline}'s (an
+     * album's own tracks), and one with no album or cover gets {@code album}
+     * and {@code art}.
+     */
+    static Result row(JsonObject row, List<Artist> byline, String album, String art) {
         String id = string(path(row, "playlistItemData", "videoId"));
         if (id.isEmpty()) return null;
-        List<String> columns = new ArrayList<>();
-        if (row.get("flexColumns") instanceof JsonArray cols) {
-            for (JsonElement c : cols) {
-                StringBuilder text = new StringBuilder();
-                if (path(c, "musicResponsiveListItemFlexColumnRenderer", "text", "runs") instanceof JsonArray runs) {
-                    for (JsonElement run : runs) text.append(string(path(run, "text")));
+        JsonArray cols = row.get("flexColumns") instanceof JsonArray a ? a : new JsonArray();
+        List<JsonElement> columns = new ArrayList<>();
+        for (JsonElement c : cols) columns.add(path(c, "musicResponsiveListItemFlexColumnRenderer", "text"));
+        if (row.get("fixedColumns") instanceof JsonArray fixed) {
+            for (JsonElement c : fixed) columns.add(path(c, "musicResponsiveListItemFixedColumnRenderer", "text"));
+        }
+        if (columns.isEmpty() || Browse.text(columns.getFirst()).isBlank()) return null;
+        String title = Browse.text(columns.getFirst());
+        List<Artist> artists = new ArrayList<>();
+        String artistLine = "", albumName = "", albumId = "", plays = "";
+        double seconds = Double.NaN;
+        for (JsonElement column : columns.subList(1, columns.size())) {
+            if (!(path(column, "runs") instanceof JsonArray runs)) continue;
+            // The artists' names as the row shows them, "C418 & Protostar", from the first to the last that links.
+            int firstArtist = -1, lastArtist = -1;
+            for (int i = 0; i < runs.size(); i++) {
+                JsonElement run = runs.get(i);
+                String text = string(path(run, "text")).strip();
+                String type = string(path(run, "navigationEndpoint", "browseEndpoint",
+                        "browseEndpointContextSupportedConfigs", "browseEndpointContextMusicConfig", "pageType"));
+                String browseId = string(path(run, "navigationEndpoint", "browseEndpoint", "browseId"));
+                if (type.equals("MUSIC_PAGE_TYPE_ARTIST") && !browseId.isEmpty()) {
+                    artists.add(new Artist(text, browseId));
+                    if (firstArtist < 0) firstArtist = i;
+                    lastArtist = i;
+                } else if (type.equals("MUSIC_PAGE_TYPE_ALBUM") && !browseId.isEmpty()) {
+                    albumName = text;
+                    albumId = browseId;
+                } else if (text.matches("\\d+(:\\d\\d)+")) {
+                    seconds = seconds(text);
+                } else if (text.toLowerCase(java.util.Locale.ROOT).endsWith("plays")) {
+                    plays = text;
                 }
-                columns.add(text.toString());
+            }
+            if (firstArtist >= 0 && artistLine.isEmpty()) {
+                StringBuilder b = new StringBuilder();
+                for (int i = firstArtist; i <= lastArtist; i++) b.append(string(path(runs.get(i), "text")));
+                artistLine = b.toString().strip();
             }
         }
-        if (columns.isEmpty() || columns.getFirst().isBlank()) return null;
-        String artist = "", album = "";
-        double seconds = Double.NaN;
-        if (columns.size() > 1) {
-            List<String> parts = new ArrayList<>(List.of(columns.get(1).split(" • ")));
-            if (!parts.isEmpty() && parts.getLast().matches("\\d+(:\\d\\d)+")) seconds = seconds(parts.removeLast());
-            if (!parts.isEmpty()) artist = parts.removeFirst();
-            if (!parts.isEmpty()) album = parts.getLast();
+        // A search row with no links still reads "Artist • Album • 3:40".
+        if (artistLine.isEmpty() && columns.size() > 1) {
+            List<String> parts = new ArrayList<>(List.of(Browse.text(columns.get(1)).split(" • ")));
+            if (!parts.isEmpty() && parts.getLast().matches("\\d+(:\\d\\d)+")) {
+                if (Double.isNaN(seconds)) seconds = seconds(parts.getLast());
+                parts.removeLast();
+            }
+            if (!parts.isEmpty() && !parts.getFirst().toLowerCase(java.util.Locale.ROOT).endsWith("plays")) artistLine = parts.removeFirst();
+            if (!parts.isEmpty() && albumName.isEmpty()) albumName = parts.getLast();
         }
+        if (artists.isEmpty() && artistLine.isEmpty() && !byline.isEmpty()) {
+            artists.addAll(byline);
+            artistLine = String.join(" & ", byline.stream().map(Artist::name).toList());
+        }
+        if (albumName.isEmpty()) albumName = album;
         if (seconds > 3600) return null;
-        String plays = columns.size() > 2 ? columns.get(2) : "";
-        String art = "";
-        if (path(row, "thumbnail", "musicThumbnailRenderer", "thumbnail", "thumbnails") instanceof JsonArray thumbs && !thumbs.isEmpty()) {
-            art = string(path(thumbs.get(thumbs.size() - 1), "url"));
+        String cover = Browse.lastThumbnail(row.get("thumbnail"));
+        if (cover.isEmpty()) cover = art;
+        String artistId = artists.isEmpty() ? artistId(cols.size() > 1 ? cols.get(1) : null) : artists.getFirst().id();
+        return new Result(id, title, artistLine, albumName, seconds, plays, cover,
+                "https://music.youtube.com/watch?v=" + id, artistId, List.copyOf(artists), albumId);
+    }
+
+    /** The channel id behind a row's artist column, or "" if the row has none. */
+    private static String artistId(JsonElement column) {
+        if (column == null) return "";
+        if (!(path(column, "musicResponsiveListItemFlexColumnRenderer", "text", "runs") instanceof JsonArray runs)) return "";
+        for (JsonElement run : runs) {
+            String id = string(path(run, "navigationEndpoint", "browseEndpoint", "browseId"));
+            String type = string(path(run, "navigationEndpoint", "browseEndpoint",
+                    "browseEndpointContextSupportedConfigs", "browseEndpointContextMusicConfig", "pageType"));
+            if (!id.isEmpty() && "MUSIC_PAGE_TYPE_ARTIST".equals(type)) return id;
         }
-        return new Result(id, columns.getFirst(), artist, album, seconds, plays, art, "https://music.youtube.com/watch?v=" + id);
+        return "";
     }
 
     private static double seconds(String time) {
@@ -230,12 +352,12 @@ final class Search {
 
     // ---------------------------------------------------------------- yt-dlp
 
-    private static List<Result> ytDlp(long mine, String query, Tools tools) throws Exception {
+    private static List<Result> ytDlp(long mine, String query, Tools tools, int limit) throws Exception {
         Process p;
         synchronized (Search.class) {
             if (mine != generation) return List.of();
             p = new ProcessBuilder(tools.ytDlp().toString(), "--flat-playlist", "--dump-json", "--no-warnings",
-                    "--", "ytsearch" + RESULTS + ":" + query).redirectErrorStream(true).start();
+                    "--", "ytsearch" + limit + ":" + query).redirectErrorStream(true).start();
             process = p;
         }
         List<Result> results = new ArrayList<>();
@@ -271,7 +393,9 @@ final class Search {
         String channel = string(o.get("channel"));
         if (channel.isEmpty()) channel = string(o.get("uploader"));
         if (channel.endsWith(" - Topic")) channel = channel.substring(0, channel.length() - " - Topic".length());
-        return new Result(id, string(o.get("title")), channel, "", seconds, "", "https://i.ytimg.com/vi/" + id + "/default.jpg", url);
+        String channelId = string(o.get("channel_id"));
+        return new Result(id, string(o.get("title")), channel, "", seconds, "", "https://i.ytimg.com/vi/" + id + "/default.jpg", url,
+                channelId, channel.isEmpty() || channelId.isEmpty() ? List.of() : List.of(new Artist(channel, channelId)), "");
     }
 
     private static void stopProcess() {

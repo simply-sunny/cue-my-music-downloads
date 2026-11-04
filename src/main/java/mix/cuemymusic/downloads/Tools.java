@@ -10,20 +10,22 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * Finds yt-dlp and ffmpeg, and oggenc if it's there. The mod never downloads
- * them; the player installs them. A game started from a launcher often doesn't
- * get the shell's PATH, so the usual install folders are searched as well.
+ * Finds yt-dlp and ffmpeg, and oggenc and spotdl if they're there. The mod
+ * never downloads them; the player installs them. A game started from a
+ * launcher often doesn't get the shell's PATH, so the usual install folders are
+ * searched as well.
  *
  * <p>oggenc (from vorbis-tools) is optional. It's libvorbis, the good Vorbis
- * encoder, for when ffmpeg was built without it, as Homebrew's is.
+ * encoder, for when ffmpeg was built without it, as Homebrew's is. spotdl is
+ * optional too: only Spotify links need it.
  */
-record Tools(Path ytDlp, Path ffmpeg, Path oggenc) {
+record Tools(Path ytDlp, Path ffmpeg, Path oggenc, Path spotdl) {
     static final boolean WINDOWS = System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("windows");
     static final boolean MAC = System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("mac");
 
     /** Both tools, or null for each one that's missing. */
     static Tools find() {
-        return new Tools(find("yt-dlp"), find("ffmpeg"), find("oggenc"));
+        return new Tools(find("yt-dlp"), find("ffmpeg"), find("oggenc"), find("spotdl"));
     }
 
     boolean ready() {
@@ -40,6 +42,11 @@ record Tools(Path ytDlp, Path ffmpeg, Path oggenc) {
         if (WINDOWS) return "winget install Gyan.FFmpeg";
         if (MAC) return "brew install vorbis-tools";
         return "sudo apt install vorbis-tools";
+    }
+
+    /** The command that installs spotdl on this system. */
+    static String spotdlHint() {
+        return "pipx install spotdl";
     }
 
     /** The command that installs whatever is missing on this system. */
@@ -76,8 +83,9 @@ record Tools(Path ytDlp, Path ffmpeg, Path oggenc) {
             if (local != null) dirs.add(Path.of(local, "Microsoft", "WinGet", "Links"));
         } else {
             for (String d : List.of("/opt/homebrew/bin", "/usr/local/bin", "/usr/bin", "/snap/bin")) dirs.add(Path.of(d));
-            if (home != null) dirs.add(Path.of(home, ".local", "bin"));
         }
+        // pipx, which installs spotdl, on every system.
+        if (home != null) dirs.add(Path.of(home, ".local", "bin"));
         return dirs;
     }
 }
