@@ -11,7 +11,7 @@ This file is the source of truth for the Modrinth project settings, version meta
 | Project type | Mod |
 | Project ID | `Ok613vDc` (submitted for review 2026-11-06) |
 | CurseForge project ID | `1786628` (slug `cue-my-music-downloads`), uploaded with `scripts/publish-curseforge.py` |
-| Summary | Find songs by name or link and download them into a resource pack for Cue My Music. Uses yt-dlp and ffmpeg, which you install. Fabric and Quilt 26.3, client-side. |
+| Summary | Download songs into Cue My Music by name or link. |
 | License | MIT |
 | Environment | Client-side only (`client_only`) |
 | Featured categories | `utility` |
@@ -49,51 +49,29 @@ Mod Menu isn't listed: the add-on doesn't use it, and Cue My Music already requi
 
 ---
 
-An add-on for [Cue My Music](https://modrinth.com/mod/cue-my-music) that finds songs by name or link and saves them into a resource pack.
+An add-on for [Cue My Music](https://modrinth.com/mod/cue-my-music) that downloads songs into a resource pack.
 
-## Before you install
+- You install yt-dlp, ffmpeg and spotdl. The mod doesn't bundle or download them.
+- It contacts YouTube Music, and YouTube and iTunes for covers.
+- Only download what you have the right to.
 
-- **Tools you install:** yt-dlp and ffmpeg are required, and spotdl is needed for Spotify links. The mod doesn't include or download them. It runs the copies it finds on your computer.
-- **Sites it contacts:** YouTube Music for searches, YouTube for thumbnails, and iTunes for album covers. The tools contact the sites in the links you give them.
-- **Only download what you have the right to.** Many sites don't allow it in their terms.
-
-## Features
-
-- **Search:** type a song or artist on the Downloads page of the player. Results come from YouTube Music, official releases first. Slowed, sped-up, lyric and cover uploads go to the bottom unless you search for them.
-- **Links:** paste a link on the page, or use `/cmm download <link>`.
-- **Playlists:** a playlist link downloads up to 200 songs and makes a Cue My Music playlist with the same name.
-- **Artists:** an artist link downloads the channel, up to 1000 songs. Downloading it again adds only the new songs.
-- **Spotify:** songs, albums, playlists and artists, through spotdl. spotdl reads the Spotify metadata, and the audio comes from a YouTube Music match. An uncertain match asks Keep, Skip, or Skip all.
-- **Covers:** each song gets its album's cover from iTunes where it has the song, otherwise its YouTube thumbnail cut square.
-- **Manage:** filter your songs by title or artist, delete one or several, and open the pack's folder.
-- **Sound quality:** songs are converted to Ogg Vorbis at quality 10, about 400 kbps.
-
-Songs go into a resource pack called Cue My Music Downloads, which is a normal folder in `resourcepacks`. They play in Cue My Music's Add-ons mode.
+Search by name, or paste a song, playlist, artist or Spotify link. Songs play in Cue My Music's Add-ons mode.
 
 ## Installation
 
-For Minecraft 26.3.
+For Minecraft 26.3 on Fabric or Quilt. Client-side only.
 
-1. Install Fabric Loader (or Quilt Loader).
-2. Install [Fabric API](https://modrinth.com/mod/fabric-api).
-3. Install [Cue My Music](https://modrinth.com/mod/cue-my-music) 1.4.0 or newer, with its requirements.
-4. Install yt-dlp and ffmpeg with the command for your system:
-   - **macOS:** `brew install yt-dlp ffmpeg vorbis-tools`
-   - **Windows:** `winget install yt-dlp.yt-dlp Gyan.FFmpeg`
-   - **Linux:** your package manager, or `pipx install yt-dlp` for the latest yt-dlp.
-5. For Spotify links, install spotdl: `pipx install spotdl`.
-6. Put the jar in `mods`.
+1. Install [Fabric API](https://modrinth.com/mod/fabric-api).
+2. Install [Cue My Music](https://modrinth.com/mod/cue-my-music) 1.4.0 or newer.
+3. Install yt-dlp and ffmpeg:
+   - macOS: `brew install yt-dlp ffmpeg vorbis-tools`
+   - Windows: `winget install yt-dlp.yt-dlp Gyan.FFmpeg`
+   - Linux: `pipx install yt-dlp`, and ffmpeg from your package manager
+4. For Spotify links, install spotdl: `pipx install spotdl`.
+5. Put the jar in `mods`.
 
-## Compatibility
+## More
 
-- **Minecraft:** 26.3 on Fabric and Quilt. Java 25.
-- **Client-side only.** Servers don't need it.
-- **One download at a time.**
-- **Live streams and anything over an hour** are skipped.
-- **Add-ons mode only.** Vanilla + FX leaves downloaded songs out.
-
-The full guide and troubleshooting are on [GitHub](https://github.com/simply-sunny/cue-my-music-downloads#readme).
-
-## License
+Search, commands and troubleshooting are on the [wiki](https://simply-sunny.github.io/cue-my-music-downloads/).
 
 MIT, see the [LICENSE](https://github.com/simply-sunny/cue-my-music-downloads/blob/main/LICENSE). Minecraft is a trademark of Mojang Studios.

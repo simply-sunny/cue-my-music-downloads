@@ -1,4 +1,5 @@
-<h1>The pack</h1>
+<h1>Configure</h1>
+<h2 id="the-pack">The pack</h2>
 <div class="prose" id="the-pack"><p>A normal folder in <code>resourcepacks</code>: copy or share it as is. Delete it, or turn it off under Resource Packs, to remove everything.</p>
 <pre><code>resourcepacks/Cue My Music Downloads/
   pack.mcmeta
@@ -8,5 +9,6 @@
     sounds/music/*.ogg named by video id
 </code></pre>
 <h2 id="sound-quality">Sound quality</h2>
-<p>Minecraft plays only Ogg Vorbis, so songs are converted at libvorbis quality 10 (about 400 kbps, 15 MB for 5 minutes). The source is already about 130 kbps Opus; any lower and drums smear audibly.</p>
-<p>Windows and Linux ffmpeg include libvorbis. <strong>Homebrew's doesn't</strong>: install <code>vorbis-tools</code> and its <code>oggenc</code> is used. Without either, ffmpeg's weaker built-in encoder is used and the Downloads page warns; download again after fixing it.</p></div>
+<p>Songs are converted to Ogg Vorbis at quality 10, about 400 kbps. A 5-minute song is about 15 MB.</p>
+<p>Homebrew's ffmpeg lacks libvorbis, so on a Mac install <code>vorbis-tools</code>. Without either, a weaker encoder is used and the Downloads page warns.</p></div>
+<!-- data-wiki-preserve -->

@@ -1,14 +1,19 @@
 <h1>Install</h1>
+<p>For Minecraft 26.3 on Fabric or Quilt. Java 25. Client-side only.</p>
 <ol>
-<li><a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> 1.4.0+ with its requirements.</li>
-<li>yt-dlp and ffmpeg (the add-on doesn't download them), and for Spotify links spotdl (<code>pipx install spotdl</code>):
+<li>Install <a href="https://fabricmc.net/use/">Fabric Loader</a> or Quilt Loader.</li>
+<li>Install <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>.</li>
+<li>Install <a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> 1.4.0 or newer.</li>
+<li>Install yt-dlp and ffmpeg with the command below.</li>
+<li>For Spotify links, install spotdl: <code>pipx install spotdl</code>.</li>
+<li>Put the jar from <a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases</a> in <code>mods</code>.</li>
+</ol>
 <div class="table-wrap"><table>
 <thead><tr><th>System</th><th>Command</th></tr></thead>
 <tbody>
 <tr><td>macOS</td><td><code>brew install yt-dlp ffmpeg vorbis-tools</code></td></tr>
 <tr><td>Windows</td><td><code>winget install yt-dlp.yt-dlp Gyan.FFmpeg</code></td></tr>
-<tr><td>Linux</td><td>Your package manager for ffmpeg, and <code>pipx install yt-dlp</code>: distro yt-dlp is often too old for YouTube.</td></tr>
-</tbody></table></div></li>
-<li>The jar from <a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases</a> in <code>mods</code>.</li>
-</ol>
-<p>Tools are found on <code>PATH</code> and in <code>/opt/homebrew/bin</code>, <code>/usr/local/bin</code>, <code>/usr/bin</code>, <code>/snap/bin</code>, <code>~/.local/bin</code> and WinGet's <code>Links</code>, since launchers often drop the shell's <code>PATH</code>. A tool installed mid-game is picked up on the next download.</p>
+<tr><td>Linux</td><td><code>pipx install yt-dlp</code>, and ffmpeg from your package manager</td></tr>
+</tbody></table></div>
+<p>Tools are found on <code>PATH</code> and in <code>/opt/homebrew/bin</code>, <code>/usr/local/bin</code>, <code>/usr/bin</code>, <code>/snap/bin</code>, <code>~/.local/bin</code> and WinGet's <code>Links</code> folder.</p>
+<!-- data-wiki-preserve -->
