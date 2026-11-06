@@ -16,6 +16,7 @@ CurseForge projects can't be created through the API, so the project is made by 
 | Avatar | `src/main/resources/assets/cuemymusic_downloads/icon.png` |
 | Source | https://github.com/simply-sunny/cue-my-music-downloads |
 | Issues | https://github.com/simply-sunny/cue-my-music-downloads/issues |
+| Wiki | https://simply-sunny.github.io/cue-my-music-downloads/ |
 
 ## Files
 

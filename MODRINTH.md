@@ -17,7 +17,7 @@ This file is the source of truth for the Modrinth project settings, version meta
 | Featured categories | `utility` |
 | Source | https://github.com/simply-sunny/cue-my-music-downloads |
 | Issues | https://github.com/simply-sunny/cue-my-music-downloads/issues |
-| Wiki / docs | https://github.com/simply-sunny/cue-my-music-downloads#use |
+| Wiki / docs | https://simply-sunny.github.io/cue-my-music-downloads/ |
 | Discord | *(none)* |
 | Donation links | *(none)* |
 | Icon | `src/main/resources/assets/cuemymusic_downloads/icon.png` (512×512) |

@@ -99,7 +99,7 @@ def main():
             "license_id": "MIT",
             "source_url": "https://github.com/simply-sunny/cue-my-music-downloads",
             "issues_url": "https://github.com/simply-sunny/cue-my-music-downloads/issues",
-            "wiki_url": "https://github.com/simply-sunny/cue-my-music-downloads#use",
+            "wiki_url": "https://simply-sunny.github.io/cue-my-music-downloads/",
             "is_draft": True,
             "initial_versions": [],
         }
