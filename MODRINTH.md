@@ -9,8 +9,8 @@ This file is the source of truth for the Modrinth project settings, version meta
 | Title | **Cue My Music: Downloads** |
 | Slug | `cue-my-music-downloads` |
 | Project type | Mod |
-| Project ID | *(not created yet)* |
-| CurseForge project ID | *(not created yet)* |
+| Project ID | `Ok613vDc` (submitted for review 2026-11-06) |
+| CurseForge project ID | `1786628` (slug `cue-my-music-downloads`), uploaded with `scripts/publish-curseforge.py` |
 | Summary | Find songs by name or link and download them into a resource pack for Cue My Music. Uses yt-dlp and ffmpeg, which you install. Fabric and Quilt 26.3, client-side. |
 | License | MIT |
 | Environment | Client-side only (`client_only`) |
@@ -22,7 +22,7 @@ This file is the source of truth for the Modrinth project settings, version meta
 | Donation links | *(none)* |
 | Icon | `src/main/resources/assets/cuemymusic_downloads/icon.png` (512×512) |
 | Gallery | *(none yet)* |
-| Disclosures | External system interactions, AI-generated content. Set in the web settings, before submitting. |
+| Disclosures | External system interactions, AI-generated content (code). Set in the web settings, before submitting. |
 
 ## Version metadata
 
@@ -30,6 +30,7 @@ Upload one Modrinth version per JAR, version number as in `gradle.properties`, c
 
 | JAR | Version ID |
 | --- | --- |
+| `cue-my-music-downloads-26.3-1.1.0.jar` | `it4J5ixA` |
 
 | JAR | Modrinth `game_versions` |
 | --- | --- |

@@ -3,8 +3,9 @@
 
 Creates the project as a draft if the slug isn't taken yet (with the icon and the listing
 body from MODRINTH.md); otherwise updates its summary and body from MODRINTH.md. Then uploads
-the built jar, at the version in gradle.properties, if that version isn't there yet: as a draft
-while the project is a draft, else listed. Submitting the project for review is done by hand.
+the built jar, at the version in gradle.properties, if that version isn't there yet. It's listed
+even while the project is a draft: the project hides it, and Modrinth doesn't count a draft version
+towards submitting. Submitting the project for review is done by hand.
 
 Usage: MODRINTH_API_KEY=... python3 scripts/publish-modrinth.py [--dry-run]
 """
@@ -117,7 +118,7 @@ def main():
                     "application/json")
             print("updated summary and body")
 
-    # Draft versions aren't listed by the API, so the ones already uploaded are the IDs recorded in MODRINTH.md.
+    # A version that's still a draft isn't listed by the API, so also check the IDs recorded in MODRINTH.md.
     existing = {v["name"] for v in request("GET", f"/project/{project['id']}/version") or []}
     recorded = dict(re.findall(r"^\| `([^`]+\.jar)` \| `([A-Za-z0-9]{8})` \|$", (ROOT / "MODRINTH.md").read_text(), re.M))
     notes = changelog()
@@ -140,7 +141,7 @@ def main():
             "version_type": "release",
             "loaders": LOADERS,
             "featured": True,
-            "status": "draft" if project["status"] == "draft" else "listed",
+            "status": "listed",
             "file_parts": ["file"],
             "primary_file": "file",
         }
