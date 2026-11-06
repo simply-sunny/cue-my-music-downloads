@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><meta name="description" content="Find songs by name or link and save them into a resource pack for Cue My Music."><title>Use · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><label for="search">Find a page</label><input id="search" type="search" placeholder="Search documentation"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html" aria-current="page">Use</a><a href="./configure.html">The pack</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Use</h1>
 <p>Open the player and click <strong>Downloads</strong> in the library. It has two tabs.</p>
-<h2 id="download">Download</h2>
+<h2 id="find-songs">Find songs</h2>
 <ul>
 <li>Type a song or artist and press Enter. Results come from YouTube Music, official releases first; slowed, sped-up, lyric and cover uploads sink unless you ask for them. If YouTube Music can't be reached, YouTube is searched instead.</li>
 <li>Download the top card or a row's arrow. A tick means you have it already. <strong>Sort</strong>, <strong>Show more</strong> (up to 30) and past-search buttons sit above the list.</li>
@@ -8,7 +8,7 @@
 <li>Paste a link instead and press Enter. <strong>Cancel</strong> stops it and keeps what finished. Missing tools are named, with the command to install them.</li>
 <li>Spotify songs are matched to YouTube Music. Unclear matches (remix, live, different length) wait for <strong>Keep</strong>, <strong>Skip</strong> or <strong>Skip all</strong>.</li>
 </ul>
-<h2 id="downloads">Downloads</h2>
+<h2 id="downloaded">Downloaded</h2>
 <p>Your songs, with a filter box. Right-click → <strong>Delete download</strong>, or select several and press Delete. <strong>Open folder</strong> opens the pack.</p>
 <h2 id="commands">Commands</h2>
 <div class="table-wrap"><table>
@@ -25,7 +25,7 @@
 <li><code>watch?v=…&amp;list=…</code> downloads the one video; use <code>playlist?list=…</code> for the list.</li>
 <li>Title and artist come from the site's track data, else the video title and uploader ("Artist - Topic" becomes "Artist"). Spotify keeps Spotify's.</li>
 <li>Downloading a song again replaces it; artist and Spotify links skip songs you have.</li>
-<li>Each download or removal reloads resources, <strong>which stops what's playing</strong>.</li>
+<li>Each download or removal reads only the song list again, so the song that's on keeps playing. The first download turns the pack on, which reloads resources and stops what's playing.</li>
 <li>With Cue My Music's defaults, downloads automix (matched loudness, blends up to 8 s) and stay out of game-audio recordings (rec-util, OBS app capture). Both are in its Settings.</li>
 </ul>
 </article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report an issue ↗</a></footer></main></div></body></html>

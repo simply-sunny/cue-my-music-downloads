@@ -12,11 +12,13 @@ Downloaded songs are add-on songs: they play in Cue My Music's **Add-ons** mode,
 
 Only download what you have the right to. Many sites don't allow it in their terms.
 
+The add-on doesn't include or download yt-dlp, ffmpeg or spotdl: you install them, and it runs the copies it finds on your computer. It contacts YouTube Music for searches and YouTube for thumbnails, and iTunes for album covers. The tools contact the sites in the links you give them.
+
 ## Install
 
 Client-side only.
 
-1. Install [Cue My Music](https://github.com/simply-sunny/cue-my-music) 1.3.0 or newer, with its requirements.
+1. Install [Cue My Music](https://github.com/simply-sunny/cue-my-music) 1.4.0 or newer, with its requirements.
 2. Install yt-dlp and ffmpeg. The add-on doesn't download them.
 
    | System | Command |
@@ -31,11 +33,11 @@ The add-on looks for all three tools on your `PATH`, and in `/opt/homebrew/bin`,
 
 ## Use
 
-Open the player and click **Downloads** in the library. The page has two tabs: **Download** for finding songs, and **Downloads** for the songs already saved.
+Open the player and click **Downloads** in the library. The page has two tabs: **Find songs** for finding songs, and **Downloaded** for the songs already saved.
 
-On **Download**, type a song or artist and press Enter or **Search**. Songs come from YouTube Music's song search, official releases first: the top result as a card with its cover, then the rest with title, artist, album and length. Slowed, sped-up, lyric, cover and similar uploads go to the bottom unless you search for them. Click **Download** on the top result, or the arrow on a row; songs you already have show a tick, and a song being downloaded shows its progress. **Sort** reorders the results by relevance, plays, length or title, and **Show more** asks for up to 30 results. Past searches stay as buttons for the session. When the search is about an artist, an **Artist** card comes first, with **Download all** for their whole channel. **Clear** hides the results. If YouTube Music can't be reached, yt-dlp searches YouTube instead. To download from a link instead, paste it and press Enter or **Download**. The tab shows the download's progress and has **Cancel** while it runs. If yt-dlp or ffmpeg is missing, it says which and shows the command to install it.
+On **Find songs**, type a song or artist and press Enter or **Search**. Songs come from YouTube Music's song search, official releases first: the top result as a card with its cover, then the rest with title, artist, album and length. Slowed, sped-up, lyric, cover and similar uploads go to the bottom unless you search for them. Click **Download** on the top result, or the arrow on a row; songs you already have show a tick, and a song being downloaded shows its progress. **Sort** reorders the results by relevance, plays, length or title, and **Show more** asks for up to 30 results. Past searches stay as buttons for the session. When the search is about an artist, an **Artist** card comes first, with **Download all** for their whole channel. **Clear** hides the results. If YouTube Music can't be reached, yt-dlp searches YouTube instead. To download from a link instead, paste it and press Enter or **Download**. The tab shows the download's progress and has **Cancel** while it runs. If yt-dlp or ffmpeg is missing, it says which and shows the command to install it.
 
-On **Downloads**, your songs are listed below a filter box: type to narrow them by title or artist. Right-click a song and pick **Delete download** to remove it, or select several (shift-click) and press Delete. **Open folder** opens the pack's folder. A running download's progress shows on this tab too.
+On **Downloaded**, your songs are listed below a filter box: type to narrow them by title or artist. Right-click a song and pick **Delete download** to remove it, or select several (shift-click) and press Delete. **Open folder** opens the pack's folder. A running download's progress shows on this tab too.
 
 Spotify links are read with spotdl, then each song is matched to a YouTube Music result. A match that isn't clear (a remix, a live version, a different length) is shown with both titles, artists and lengths, and asks **Keep**, **Skip**, or **Skip all**; the download waits until you answer. **Skip all** skips the rest of the uncertain matches in that link. Everything else downloads without asking. A Spotify playlist or album makes a Cue My Music playlist named after it; a Spotify artist adds the songs to that artist, like a YouTube artist link.
 
@@ -65,7 +67,9 @@ Downloaded songs play in Add-ons mode only. With Cue My Music's defaults they al
 
 Both are in Cue My Music's **Settings** (**Automix add-on songs**, **Keep add-on songs out of recordings**).
 
-After each download or removal, resources reload so the player sees the change. **That stops whatever is playing**, as any resource reload does.
+Each song gets its own cover in Cue My Music: its album's cover from iTunes where it has the song, otherwise its YouTube thumbnail cut square.
+
+After each download or removal, only the song list is read again, so the song that's on keeps playing. The first download turns the pack on, which reloads resources and stops whatever is playing.
 
 ## The pack
 
@@ -74,7 +78,6 @@ The pack is a normal folder in `resourcepacks`, so you can copy it to another ga
 ```
 resourcepacks/Cue My Music Downloads/
   pack.mcmeta
-  pack.png
   assets/cuemymusic_dl/
     sounds.json        one sound event, cuemymusic_dl:music.downloads
     cuemymusic.json    each song's title, artist, album, and link
