@@ -86,7 +86,7 @@
 	"cuemymusic_downloads.panel.by": "By",
 	"cuemymusic_downloads.panel.artists": "Artists",
 	"cuemymusic_downloads.panel.on_album": "On",
-	"cuemymusic_downloads.panel.opening": "Opening %s...",
+	"cuemymusic_downloads.panel.opening": "Opening %s…",
 	"cuemymusic_downloads.panel.open_failed": "Couldn't open %s: %s",
 	"cuemymusic_downloads.panel.retry": "Try again",
 	"cuemymusic_downloads.panel.kind.artist": "Artist",

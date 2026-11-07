@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -215,10 +216,21 @@ final class DownloadPack {
         if (repo.getSelectedIds().contains(ID)) {
             if (!refreshSounds()) mc.reloadResourcePacks();
         } else if (repo.addPack(ID)) {
+            repo.setSelected(atBottom(repo.getSelectedIds()));
             mc.options.updateResourcePacks(repo);
         } else {
             DownloadsClient.LOG.warn("Couldn't find the {} pack after writing it", NAME);
         }
+    }
+
+    /** Below the player's own packs: the game finds the songs wherever the pack sits, so it needn't outrank anything. */
+    private static List<String> atBottom(Collection<String> selected) {
+        List<String> ids = new ArrayList<>(selected);
+        ids.remove(ID);
+        int first = 0;
+        while (first < ids.size() && !ids.get(first).startsWith("file/")) first++;
+        ids.add(first, ID);
+        return ids;
     }
 
     private static void write(List<Song> songs) throws IOException {

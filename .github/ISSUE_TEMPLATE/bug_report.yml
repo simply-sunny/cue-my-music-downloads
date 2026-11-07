@@ -17,7 +17,14 @@ body:
     id: mod-version
     attributes:
       label: Cue My Music and add-on versions
-      placeholder: "Cue My Music 1.2.0, Downloads 1.0.0"
+      placeholder: "Cue My Music 1.4.0, Downloads 1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: loader
+    attributes:
+      label: Loader and version
+      placeholder: "Fabric Loader 0.20.1"
     validations:
       required: true
   - type: input
@@ -36,7 +43,16 @@ body:
     validations:
       required: true
   - type: textarea
+    id: mods
+    attributes:
+      label: Mods and versions
+      description: Every mod installed, with its version.
+    validations:
+      required: true
+  - type: textarea
     id: log
     attributes:
       label: Log
       description: yt-dlp's output for a failed download is in `logs/latest.log`. Attach it, or paste a link.
+    validations:
+      required: true
