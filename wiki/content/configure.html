@@ -1,14 +1,10 @@
 <h1>Configure</h1>
-<h2 id="the-pack">The pack</h2>
-<div class="prose" id="the-pack"><p>A normal folder in <code>resourcepacks</code>: copy or share it as is. Delete it, or turn it off under Resource Packs, to remove everything.</p>
-<pre><code>resourcepacks/Cue My Music Downloads/
-  pack.mcmeta
-  assets/cuemymusic_dl/
-    sounds.json        one sound event, cuemymusic_dl:music.downloads
-    cuemymusic.json    each song's title, artist, album, and link
-    sounds/music/*.ogg named by video id
-</code></pre>
-<h2 id="sound-quality">Sound quality</h2>
-<p>Songs are converted to Ogg Vorbis at quality 10, about 400 kbps. A 5-minute song is about 15 MB.</p>
-<p>Homebrew's ffmpeg lacks libvorbis, so on a Mac install <code>vorbis-tools</code>. Without either, a weaker encoder is used and the Downloads page warns.</p></div>
+<p>There's no settings screen.</p>
+<h2 id="settings">Settings</h2>
+<p>Songs are saved in <code>resourcepacks/Cue My Music Downloads/</code>, a normal folder you can copy or share. Delete it to reset.</p>
+<div class="table-wrap"><table><thead><tr><th>Setting</th><th>Default</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Pack</td><td>On</td><td>At the bottom of your list. Turn it off under <strong>Resource Packs</strong>.</td></tr>
+<tr><td>Sound quality</td><td>Ogg Vorbis 10</td><td>About 400 kbps, so a 5-minute song is about 15 MB.</td></tr>
+</tbody></table></div>
+<p>Homebrew's ffmpeg lacks libvorbis, so on a Mac install <code>vorbis-tools</code>. Without either, a weaker encoder is used and the Downloads page warns.</p>
 <!-- data-wiki-preserve -->

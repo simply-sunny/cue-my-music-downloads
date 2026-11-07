@@ -1,5 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><link rel="preload" href="./assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><meta name="description" content="Download songs into Cue My Music by name or link."><title>Troubleshooting · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><input id="search" type="search" placeholder="Search" aria-label="Search"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html" aria-current="page">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Troubleshooting</h1>
-<div class="prose" id="troubleshooting"><div class="table-wrap"><table>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><link rel="preload" href="./assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><meta name="description" content="Download songs into Cue My Music by name or link."><link rel="icon" type="image/png" href="./assets/icon.png"><meta property="og:type" content="website"><meta property="og:title" content="Cue My Music: Downloads"><meta property="og:description" content="Download songs into Cue My Music by name or link."><meta property="og:image" content="https://simply-sunny.github.io/cue-my-music-downloads/assets/icon.png"><title>Troubleshooting · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><input id="search" type="search" placeholder="Search" aria-label="Search"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html" aria-current="page">Troubleshooting</a><a href="./roadmap.html">Roadmap</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Troubleshooting</h1>
+<div class="table-wrap"><table>
 <thead>
 <tr>
 <th>Problem</th>
@@ -8,16 +8,20 @@
 </thead>
 <tbody>
 <tr>
-<td><code>Couldn't find yt-dlp</code> or <code>ffmpeg</code></td>
+<td><code>requires cuemymusic</code></td>
+<td>Install Cue My Music 1.4.0 or newer.</td>
+</tr>
+<tr>
+<td><code>yt-dlp isn't installed</code> or <code>ffmpeg isn't installed</code></td>
 <td>Install it (the page shows the command), or link it into <code>/usr/local/bin</code> or <code>~/.local/bin</code>.</td>
 </tr>
 <tr>
-<td><code>Couldn't find spotdl</code>, or a Spotify link says it needs it</td>
-<td><code>pipx install spotdl</code></td>
+<td><code>Spotify links need spotdl</code></td>
+<td>Run <code>pipx install spotdl</code>. No restart needed.</td>
 </tr>
 <tr>
 <td>A Spotify song matched the wrong video</td>
-<td>Press <strong>Skip</strong> (or <strong>Skip all</strong>) at the question.</td>
+<td>Press <strong>Skip</strong> or <strong>Skip all</strong> at <strong>Is this the right song?</strong></td>
 </tr>
 <tr>
 <td><code>Download failed</code> from YouTube</td>
@@ -25,10 +29,17 @@
 </tr>
 <tr>
 <td>The song isn't in the player</td>
-<td>Check that <strong>Cue My Music Downloads</strong> is on under Resource Packs.</td>
+<td>Check that <strong>Cue My Music Downloads</strong> is on under <strong>Resource Packs</strong>.</td>
 </tr>
 </tbody>
 </table></div>
-<p>yt-dlp's full output for a failed download is in <code>logs/latest.log</code>.</p></div>
+<p><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report issues</a> with <code>logs/latest.log</code> and your Minecraft, mods and loader versions. It holds yt-dlp's full output.</p>
+<h2 id="limits">Limits</h2>
+<ul>
+<li>One download at a time. Live streams and anything over an hour are skipped, as are private, removed or region-locked videos in a playlist.</li>
+<li><code>watch?v=…&amp;list=…</code> downloads the one video; use <code>playlist?list=…</code> for the list.</li>
+<li>Downloading a song again replaces it; artist and Spotify links skip songs you have.</li>
+<li>The first download turns the pack on, which stops what's playing. Later ones don't.</li>
+</ul>
 <!-- data-wiki-preserve -->
 </article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report an issue ↗</a></footer></main></div></body></html>

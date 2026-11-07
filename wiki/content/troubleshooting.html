@@ -1,5 +1,5 @@
 <h1>Troubleshooting</h1>
-<div class="prose" id="troubleshooting"><div class="table-wrap"><table>
+<div class="table-wrap"><table>
 <thead>
 <tr>
 <th>Problem</th>
@@ -8,16 +8,20 @@
 </thead>
 <tbody>
 <tr>
-<td><code>Couldn't find yt-dlp</code> or <code>ffmpeg</code></td>
+<td><code>requires cuemymusic</code></td>
+<td>Install Cue My Music 1.4.0 or newer.</td>
+</tr>
+<tr>
+<td><code>yt-dlp isn't installed</code> or <code>ffmpeg isn't installed</code></td>
 <td>Install it (the page shows the command), or link it into <code>/usr/local/bin</code> or <code>~/.local/bin</code>.</td>
 </tr>
 <tr>
-<td><code>Couldn't find spotdl</code>, or a Spotify link says it needs it</td>
-<td><code>pipx install spotdl</code></td>
+<td><code>Spotify links need spotdl</code></td>
+<td>Run <code>pipx install spotdl</code>. No restart needed.</td>
 </tr>
 <tr>
 <td>A Spotify song matched the wrong video</td>
-<td>Press <strong>Skip</strong> (or <strong>Skip all</strong>) at the question.</td>
+<td>Press <strong>Skip</strong> or <strong>Skip all</strong> at <strong>Is this the right song?</strong></td>
 </tr>
 <tr>
 <td><code>Download failed</code> from YouTube</td>
@@ -25,9 +29,16 @@
 </tr>
 <tr>
 <td>The song isn't in the player</td>
-<td>Check that <strong>Cue My Music Downloads</strong> is on under Resource Packs.</td>
+<td>Check that <strong>Cue My Music Downloads</strong> is on under <strong>Resource Packs</strong>.</td>
 </tr>
 </tbody>
 </table></div>
-<p>yt-dlp's full output for a failed download is in <code>logs/latest.log</code>.</p></div>
+<p><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report issues</a> with <code>logs/latest.log</code> and your Minecraft, mods and loader versions. It holds yt-dlp's full output.</p>
+<h2 id="limits">Limits</h2>
+<ul>
+<li>One download at a time. Live streams and anything over an hour are skipped, as are private, removed or region-locked videos in a playlist.</li>
+<li><code>watch?v=…&amp;list=…</code> downloads the one video; use <code>playlist?list=…</code> for the list.</li>
+<li>Downloading a song again replaces it; artist and Spotify links skip songs you have.</li>
+<li>The first download turns the pack on, which stops what's playing. Later ones don't.</li>
+</ul>
 <!-- data-wiki-preserve -->

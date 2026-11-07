@@ -1,12 +1,16 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><link rel="preload" href="./assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><meta name="description" content="Download songs into Cue My Music by name or link."><title>Install · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><input id="search" type="search" placeholder="Search" aria-label="Search"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html" aria-current="page">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Install</h1>
-<p>For Minecraft 26.3 on Fabric or Quilt. Java 25. Client-side only.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000000"><link rel="preload" href="./assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><meta name="description" content="Download songs into Cue My Music by name or link."><link rel="icon" type="image/png" href="./assets/icon.png"><meta property="og:type" content="website"><meta property="og:title" content="Cue My Music: Downloads"><meta property="og:description" content="Download songs into Cue My Music by name or link."><meta property="og:image" content="https://simply-sunny.github.io/cue-my-music-downloads/assets/icon.png"><title>Install · Cue My Music: Downloads</title><link rel="stylesheet" href="./assets/base.css"><link rel="stylesheet" href="./assets/style.css"><script src="./assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header shell"><a class="brand" href="./index.html">Cue My Music: Downloads</a><nav aria-label="Project"><a href="https://github.com/simply-sunny/cue-my-music-downloads">Source ↗</a><a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases ↗</a></nav></header><div class="wiki shell"><aside class="sidebar"><input id="search" type="search" placeholder="Search" aria-label="Search"><nav aria-label="Documentation"><a href="./index.html">Overview</a><a href="./install.html" aria-current="page">Install</a><a href="./use.html">Use</a><a href="./configure.html">Configure</a><a href="./troubleshooting.html">Troubleshooting</a><a href="./roadmap.html">Roadmap</a><a href="./changelog.html">Changelog</a><a href="./develop.html">Develop</a></nav><span class="meta" id="search-status" role="status"></span></aside><main class="wiki-main" id="main" tabindex="-1"><article class="prose"><h1>Install</h1>
+<p>For Minecraft 26.3. Java 25. Client-side only.</p>
+<div class="tabs">
+<input type="radio" name="loader" id="loader-fabric" checked><label for="loader-fabric">Fabric</label>
+<input type="radio" name="loader" id="loader-quilt"><label for="loader-quilt">Quilt</label>
+<div class="tab">
 <ol>
-<li>Install <a href="https://fabricmc.net/use/">Fabric Loader</a> or Quilt Loader.</li>
+<li>Install <a href="https://fabricmc.net/use/">Fabric Loader</a>.</li>
 <li>Install <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>.</li>
 <li>Install <a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> 1.4.0 or newer.</li>
 <li>Install yt-dlp and ffmpeg with the command below.</li>
 <li>For Spotify links, install spotdl: <code>pipx install spotdl</code>.</li>
-<li>Put the jar from <a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">Releases</a> in <code>mods</code>.</li>
+<li>Put the jar from <a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">GitHub Releases</a> in <code>mods</code>. <span class="soon" tabindex="0" data-review="Modrinth=2026-11-06,CurseForge=2026-11-06"><i class="soon__spin" aria-hidden="true"></i>Coming soon to Modrinth + CurseForge</span></li>
 </ol>
 <div class="table-wrap"><table>
 <thead><tr><th>System</th><th>Command</th></tr></thead>
@@ -16,5 +20,25 @@
 <tr><td>Linux</td><td><code>pipx install yt-dlp</code>, and ffmpeg from your package manager</td></tr>
 </tbody></table></div>
 <p>Tools are found on <code>PATH</code> and in <code>/opt/homebrew/bin</code>, <code>/usr/local/bin</code>, <code>/usr/bin</code>, <code>/snap/bin</code>, <code>~/.local/bin</code> and WinGet's <code>Links</code> folder.</p>
+</div>
+<div class="tab">
+<ol>
+<li>Install <a href="https://quiltmc.org/en/install/">Quilt Loader</a>.</li>
+<li>Install <a href="https://modrinth.com/mod/fabric-api">Fabric API</a>.</li>
+<li>Install <a href="https://github.com/simply-sunny/cue-my-music">Cue My Music</a> 1.4.0 or newer.</li>
+<li>Install yt-dlp and ffmpeg with the command below.</li>
+<li>For Spotify links, install spotdl: <code>pipx install spotdl</code>.</li>
+<li>Put the jar from <a href="https://github.com/simply-sunny/cue-my-music-downloads/releases">GitHub Releases</a> in <code>mods</code>. <span class="soon" tabindex="0" data-review="Modrinth=2026-11-06,CurseForge=2026-11-06"><i class="soon__spin" aria-hidden="true"></i>Coming soon to Modrinth + CurseForge</span></li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th>System</th><th>Command</th></tr></thead>
+<tbody>
+<tr><td>macOS</td><td><code>brew install yt-dlp ffmpeg vorbis-tools</code></td></tr>
+<tr><td>Windows</td><td><code>winget install yt-dlp.yt-dlp Gyan.FFmpeg</code></td></tr>
+<tr><td>Linux</td><td><code>pipx install yt-dlp</code>, and ffmpeg from your package manager</td></tr>
+</tbody></table></div>
+<p>Tools are found on <code>PATH</code> and in <code>/opt/homebrew/bin</code>, <code>/usr/local/bin</code>, <code>/usr/bin</code>, <code>/snap/bin</code>, <code>~/.local/bin</code> and WinGet's <code>Links</code> folder.</p>
+</div>
+</div>
 <!-- data-wiki-preserve -->
 </article><footer class="site-footer"><span>Cue My Music: Downloads</span><a href="https://github.com/simply-sunny/cue-my-music-downloads/issues">Report an issue ↗</a></footer></main></div></body></html>

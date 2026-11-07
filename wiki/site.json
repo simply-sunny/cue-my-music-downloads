@@ -5,5 +5,9 @@
   "source_dir": "..",
   "downloads": {
     "GitHub Releases": "https://github.com/simply-sunny/cue-my-music-downloads/releases"
+  },
+  "coming": {
+    "Modrinth": "2026-11-06",
+    "CurseForge": "2026-11-06"
   }
 }

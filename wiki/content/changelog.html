@@ -1,8 +1,12 @@
-<h1>Changelog</h1><p>All notable changes to Cue My Music: Downloads are documented here. This project follows <a href="https://semver.org/">Semantic Versioning</a>.</p>
+<h1>Changelog</h1>
 <h2 id="unreleased">[Unreleased]</h2>
+<h3>Changed</h3>
+<ul>
+<li>The pack turns on at the bottom of your resource pack list. The mod finds its songs wherever it sits.</li>
+</ul>
 <h2 id="110-2026-11-06">[1.1.0] - 2026-11-06</h2>
 <p>Requires Cue My Music 1.4.0 or newer.</p>
-<h3 id="added">Added</h3>
+<h3>Added</h3>
 <ul>
 <li><strong>Artist downloads</strong>: a YouTube channel or artist link, or an <strong>Artist → Download all</strong> card in search results, downloads the whole channel (up to 1000 songs). Songs already in the pack are skipped, so running it again only adds what's new. Cue My Music already groups them by artist, so no playlist is made.</li>
 <li><strong>Spotify links</strong>, through spotdl: songs, albums, playlists and artists. spotdl only reads the Spotify metadata; the audio comes from a YouTube Music match. Spotify playlists and albums make a Cue My Music playlist named after them. Install spotdl with <code>pipx install spotdl</code>; it's optional, and only Spotify links need it.</li>
@@ -11,7 +15,7 @@
 <li><strong>Song covers</strong>: every song gets its own cover, shown in Cue My Music: its album's cover from iTunes where it has the song, otherwise its YouTube thumbnail cut square. Songs downloaded before get theirs in the background, a few a minute, and thumbnails are swapped for album covers where one is found.</li>
 <li><strong>More search tools</strong>: sort results by relevance, plays, length or title; <strong>Show more</strong> for up to 30 results; and recent searches as buttons.</li>
 </ul>
-<h3 id="changed">Changed</h3>
+<h3>Changed</h3>
 <ul>
 <li>Shorter, plainer text: the Downloads page help, chat messages while downloading, and the mod list description.</li>
 <li>Songs are converted to Ogg as each one finishes, not after the whole link, so long artist and playlist downloads use less disk and cancelling keeps the finished songs.</li>
@@ -19,7 +23,7 @@
 <li>The Downloads pack has no picture any more: it looked like a player and stood in as every song's cover.</li>
 <li>Downloading or deleting songs no longer reloads every resource: only the song list is read again, so it's quick and the song that's on keeps playing instead of skipping.</li>
 </ul>
-<h3 id="fixed">Fixed</h3>
+<h3>Fixed</h3>
 <ul>
 <li>Downloading outside Add-ons mode says to switch to Add-ons to play the songs.</li>
 <li>The README no longer says downloads play from the player only: Add-ons mode picks them.</li>
@@ -27,7 +31,7 @@
 </ul>
 <h2 id="100-2026-10-27">[1.0.0] - 2026-10-27</h2>
 <p>First release. Requires Cue My Music 1.3.0 or newer.</p>
-<h3 id="added_1">Added</h3>
+<h3>Added</h3>
 <ul>
 <li><strong>Search by name</strong>: type a song or artist on the Downloads page. Results come from YouTube Music's song search, official releases first, with covers, and fall back to YouTube if YouTube Music can't be reached.</li>
 <li><strong>Downloads page</strong> in the player, with progress, Cancel, a tick on songs you already have, and the list of downloaded songs.</li>

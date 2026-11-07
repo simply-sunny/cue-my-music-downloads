@@ -1,29 +1,37 @@
 <h1>Use</h1>
+<div class="cmm-player" data-demo="downloads" data-panel="downloads" data-page="PANEL:cuemymusic_downloads" data-parts="center" data-mode="addons"><noscript><p>The interactive player needs JavaScript.</p></noscript></div>
 <p>Open the player and click <strong>Downloads</strong> in the library.</p>
 <h2 id="find-songs">Find songs</h2>
+<div class="cmm-player" data-demo="find" data-panel="downloads" data-page="PANEL:cuemymusic_downloads" data-parts="center" data-mode="addons"><noscript><p>The interactive player needs JavaScript.</p></noscript></div>
 <ul>
-<li>Type a song or artist and press Enter. Results come from YouTube Music, official releases first.</li>
+<li>Type a song or artist and press <code>Enter</code>. Results come from YouTube Music, official releases first.</li>
 <li>Click the top card or a row's arrow. A tick means you have the song.</li>
 <li>An artist search puts an <strong>Artist</strong> card first, with <strong>Download all</strong>.</li>
-<li>Or paste a link and press Enter. <strong>Cancel</strong> stops it and keeps what finished.</li>
+<li>Or paste a link and press <code>Enter</code>. <strong>Cancel</strong> stops it and keeps what finished.</li>
 <li>Unclear Spotify matches wait for <strong>Keep</strong>, <strong>Skip</strong> or <strong>Skip all</strong>.</li>
 </ul>
 <h2 id="downloaded">Downloaded</h2>
-<p>Your songs, with a filter box. Right-click → <strong>Delete download</strong>, or select several and press Delete. <strong>Open folder</strong> opens the pack.</p>
+<div class="cmm-player" data-demo="downloaded" data-panel="downloads" data-page="PANEL:cuemymusic_downloads" data-parts="center" data-mode="addons"><noscript><p>The interactive player needs JavaScript.</p></noscript></div>
+<p>Your songs, with a filter box. Right-click → <strong>Delete download</strong>, or select several and press <code>Delete</code>. <strong>Open folder</strong> opens the pack.</p>
+<h2 id="links">Links</h2>
+<div class="cmm-player" data-demo="links" data-panel="downloads" data-page="PANEL:cuemymusic_downloads" data-parts="center" data-mode="addons"><noscript><p>The interactive player needs JavaScript.</p></noscript></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Link</th><th>Downloads</th></tr></thead>
+<tbody>
+<tr><td>Song or video</td><td>That song.</td></tr>
+<tr><td>Playlist or album</td><td>Up to 200 songs, plus a Cue My Music playlist of the same name.</td></tr>
+<tr><td>Artist or channel</td><td>Up to 1000 songs under that artist. Again later adds only new ones.</td></tr>
+<tr><td>Spotify (any of the above)</td><td>Spotify's metadata through <a href="https://github.com/spotDL/spotify-downloader">spotdl</a>, audio from YouTube.</td></tr>
+</tbody></table></div>
+<h2 id="keys">Keys</h2>
 <h2 id="commands">Commands</h2>
+<p>They work on any server.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Command</th><th>Does</th></tr></thead>
 <tbody>
-<tr><td><code>/cmm download &lt;link&gt;</code></td><td>Downloads it; progress shows above the hotbar.</td></tr>
-<tr><td><code>/cmm download cancel</code></td><td>Stops it; also answers a pending match with Skip.</td></tr>
+<tr><td><code>/cmm download &lt;link&gt;</code></td><td>Downloads it. Progress shows above the hotbar.</td></tr>
+<tr><td><code>/cmm download cancel</code></td><td>Stops it, and answers a waiting match with <strong>Skip</strong>.</td></tr>
 <tr><td><code>/cmm downloads</code></td><td>Lists songs. Click the pack name to open its folder.</td></tr>
 <tr><td><code>/cmm downloads remove &lt;song&gt;</code></td><td>Deletes one.</td></tr>
 </tbody></table></div>
-<h2 id="rules">Rules</h2>
-<ul>
-<li>One download at a time. Live streams and anything over an hour are skipped, as are private, removed or region-locked videos in a playlist.</li>
-<li><code>watch?v=…&amp;list=…</code> downloads the one video; use <code>playlist?list=…</code> for the list.</li>
-<li>Downloading a song again replaces it; artist and Spotify links skip songs you have.</li>
-<li>The first download turns the pack on, which stops what's playing. Later ones don't.</li>
-</ul>
 <!-- data-wiki-preserve -->
