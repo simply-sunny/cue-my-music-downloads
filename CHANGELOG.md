@@ -4,6 +4,8 @@ All notable changes to Cue My Music: Downloads are documented here. This project
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-06
+
 ### Changed
 
 - The pack turns on at the bottom of your resource pack list. The mod finds its songs wherever it sits.
