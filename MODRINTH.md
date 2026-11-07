@@ -31,10 +31,12 @@ Upload one Modrinth version per JAR, version number as in `gradle.properties`, c
 | JAR | Version ID |
 | --- | --- |
 | `cue-my-music-downloads-26.3-1.1.0.jar` | `it4J5ixA` |
+| `cue-my-music-downloads-26.3-1.1.1.jar` | `KWk4ZuLF` |
 
 | JAR | Modrinth `game_versions` |
 | --- | --- |
 | `cue-my-music-downloads-26.3-1.1.0.jar` | `26.3` |
+| `cue-my-music-downloads-26.3-1.1.1.jar` | `26.3` |
 
 Version name format: `Cue My Music: Downloads 1.1.0 (26.3)`.
 
